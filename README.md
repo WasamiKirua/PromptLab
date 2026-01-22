@@ -98,21 +98,9 @@ static/images/           # Preview thumbnails
 static/images_generated/ # Generated outputs
 ```
 
-## What to Add Next (ideas)
-
-- Template editor UI with validation + schema hints
-- Gallery filters and tags
-- Batch generation for multiple templates
-- History of generated images with prompt metadata
-- Rate limiting and job queue for large batches
-- Export/share functionality for generated images
-
 ## Notes
 
 - The UI is designed for fast iteration on prompts and templates.
 - NanoBanana routes are intended for JSON-template based generation.
 - The app expects preview images to exist in `static/images/` for gallery cards.
 
----
-
-If you want, I can also add screenshots and a short GIF walkthrough.

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Gallery - Nano-Banana</title>
+    <style>
+        :root {
+            --bg: #fff6f2;
+            --panel: #ffffff;
+            --card: #fff9f5;
+            --ink: #2f2320;
+            --muted: #6f5d59;
+            --accent: #ffd3e4;
+            --accent-strong: #ff8fb8;
+            --accent-cool: #8fd3ff;
+        }
+        body { font-family: "Trebuchet MS", sans-serif; background: radial-gradient(circle at top, #fff6f2 0%, #fff3f8 60%); color: var(--ink); margin: 0; padding: 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; gap: 1rem; }
+        h1 { margin: 0; font-size: 2.2rem; letter-spacing: 0.02em; }
+        .home-link { color: var(--accent); text-decoration: none; border: 1px solid #f0e3f3; padding: 0.4rem 0.9rem; border-radius: 999px; background: #fff6f2; font-weight: 600; }
+        .home-link:hover { background: #fff0f6; border-color: var(--accent); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+        .card { background: var(--card); border-radius: 16px; padding: 1rem; border: 1px solid #ffe3ef; box-shadow: 0 12px 28px rgba(255, 143, 184, 0.15); }
+        .card img { width: 100%; border-radius: 12px; display: block; }
+        .filename { font-size: 0.9rem; color: var(--muted); margin-top: 0.6rem; word-break: break-all; }
+        .actions { display: flex; gap: 0.6rem; margin-top: 0.8rem; flex-wrap: wrap; }
+        .btn { border: none; padding: 0.5rem 1rem; border-radius: 999px; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 18px rgba(255, 143, 184, 0.2); }
+        .btn-download { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-cool) 100%); color: #2f2320; }
+        .btn-delete { background: linear-gradient(135deg, #ff8fb8 0%, #ff6ea6 100%); color: #2f2320; }
+        .empty { padding: 2rem; border: 1px dashed #f0e3f3; border-radius: 16px; background: var(--panel); color: var(--muted); text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Generated Gallery</h1>
+            <a class="home-link" href="/">← Back to Home</a>
+        </div>
+
+        {% if images %}
+            <div class="grid">
+                {% for image in images %}
+                <div class="card">
+                    <img src="{{ image.url }}" alt="{{ image.name }}">
+                    <div class="filename">{{ image.name }}</div>
+                    <div class="actions">
+                        <a class="btn btn-download" href="{{ image.url }}" download>Download</a>
+                        <form method="post" action="/gallery/delete">
+                            <input type="hidden" name="filename" value="{{ image.name }}">
+                            <button class="btn btn-delete" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty">No generated images yet.</div>
+        {% endif %}
+    </div>
+</body>
+</html>

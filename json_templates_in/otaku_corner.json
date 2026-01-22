@@ -1,0 +1,72 @@
+{
+  "scene": "mirror_selfie_otaku_pc_corner_blue",
+
+  "subject": {
+    "gender_presentation": "female",
+    "age_bracket": "mid_20s",
+    "ethnicity": "East Asian.",
+    "build": "slim with defined waist; natural proportions",
+    "skin_tone": "light neutral",
+    "hair": { "length": "very long", "style": "straight with slight wave ends", "color": "medium brown" },
+    "pose": {
+      "stance": "standing, slight contrapposto",
+      "right_hand": "holding phone in front of face (identity obscured)",
+      "left_arm": "relaxed alongside torso",
+      "torso": "subtle arch; midriff visible"
+    },
+    "wardrobe": {
+      "top": "baby-blue cropped knit cardigan, two buttons fastened; blue bralette subtly visible",
+      "bottom": "denim micro-shorts with blue satin ribbon bows at both hips",
+      "socks": "thigh-high blue-and-white horizontal stripes",
+      "accessories": { "phone_case": "blue cute mascot case" }
+    }
+  },
+
+  "environment": {
+    "description": "bedroom PC corner seen in a wall mirror",
+    "furnishings": [
+      "white desk",
+      "single monitor with pastel blue wallpaper (no readable text)",
+      "mechanical keyboard with white keycaps on blue desk mat",
+      "mouse on small blue mousepad",
+      "PC tower to the right with blue case lighting",
+      "three anime figures on/near the PC",
+      "pagoda poster on wall",
+      "cat-shaped desk lamp with blue accent",
+      "clear glass of water",
+      "tall leafy plant by window (camera-left)"
+    ],
+    "color_swap": "replace all former pink accents in wardrobe and room with blue (baby blue → sky/periwinkle)."
+  },
+
+  "lighting": {
+    "source": "daylight from large window camera-left through sheer curtain",
+    "quality": "soft diffused",
+    "white_balance_K": 5200
+  },
+
+  "camera": {
+    "mode": "smartphone rear camera via mirror (no portrait/bokeh mode)",
+    "focal_length_eq_mm": 26,
+    "distance_m": { "subject_to_mirror": 0.6, "camera_to_mirror": 0.5 },
+    "exposure": { "aperture_f": 1.8, "iso": 100, "shutter_s": 0.01, "ev_comp": -0.3 },
+    "focus": "torso and shorts in reflection",
+    "depth_of_field": "natural smartphone DOF (deep); background readable, no artificial blur",
+    "framing": {
+      "aspect_ratio": "1:1",
+      "crop": "top of head to mid-thigh; include desk, monitor, PC, and plant",
+      "angle": "slight downward tilt from mirror viewpoint",
+      "composition_notes": "keep subject centered; avoid wide-edge stretching by stepping back and cropping square"
+    }
+  },
+
+  "negatives": [
+    "pink/magenta accents anywhere",
+    "beauty-filter/airbrushed skin; poreless look",
+    "exaggerated or distorted anatomy",
+    "NSFW, see-through fabric, wardrobe malfunction",
+    "logos, brand names, readable UI text",
+    "fake portrait-mode blur, CGI/illustration look"
+  ]
+}
+

@@ -1,0 +1,33 @@
+{
+  "prompt_type": "photorealistic_image_generation",
+  "subject": {
+    "description": "Young woman with fair skinned tone.",
+    "hair": "Long black straight blonde hair extending past the waist, styled with a white tropical flower tucked behind the left ear.",
+    "expression": "Calm, relaxed expression, looking slightly off-camera."
+  },
+  "attire": {
+    "type": "String bikini",
+    "pattern": "White base with a vibrant floral print featuring blue, yellow, and orange flowers with green leaves.",
+    "details": "Triangle top and tie-side bottoms."
+  },
+  "pose": {
+    "body_position": "Sitting on white sand, legs extended diagonally toward the bottom left, leaning back on left hand for support.",
+    "hand_placement": "Right hand raised, gently touching the neck/shoulder area.",
+    "orientation": "Full body visible, angled slightly toward the right."
+  },
+  "environment": {
+    "location": "Tropical beach with white sand and clear turquoise water.",
+    "background": "Deep blue sky with faint clouds. Two distinct island peaks visible on the horizon line.",
+    "details": "Gentle waves washing onto the shore. Distant figures of people swimming and walking on the beach."
+  },
+  "lighting_and_atmosphere": {
+    "lighting": "Bright, direct natural sunlight creating high contrast and sharp shadows on the sand.",
+    "mood": "Serene, vacation vibe, summery.",
+    "color_palette": "Vibrant blues, warm sand tones, natural skin tones, bright floral colors."
+  },
+  "technical_specifications": {
+    "quality": "4k, Ultra HD, high resolution, highly detailed texture.",
+    "style": "Realistic photography, candid shot.",
+    "focus": "Sharp focus on the subject with slightly softer background depth."
+  }
+}

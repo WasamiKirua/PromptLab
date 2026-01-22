@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 120px; resize: vertical; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        .tab-nav { margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 10px; }
+        .tab-link { background-color: #f0cfe0; color: #6f5d59; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; }
+        .tab-link.active { background-color: #ff8fb8; color: #fff6f2; }
+        .tab-link:hover:not(.active) { background-color: #ffe1ee; color: #fff; }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>Luxury Woman Car</h1>
+            <form id="forge-form" action="/luxurywomancar" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/luxury_woman_car.png" alt="Template preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'scene-lc')">Scene</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-lc')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'pose-lc')">Pose</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'outfit-lc')">Outfit</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'body-lc')">Body</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'environment-lc')">Environment</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'lighting-lc')">Lighting</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'photo-lc')">Photography</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'palette-lc')">Color Palette</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'vibe-lc')">Vibe</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'critical-lc')">Critical</button>
+                </div>
+                <div id="scene-lc" class="tab-content active">
+                    <div class="form-group"><label for="scene-lc">Scene</label><textarea id="scene-lc" name="scene">{{luxury_woman_car_data.scene}}</textarea></div>
+                </div>
+                <div id="subject-lc" class="tab-content">
+                    <div class="form-group"><label for="character-lc">Character</label><textarea id="character-lc" name="subject.character">{{luxury_woman_car_data.subject.character}}</textarea></div>
+                    <div class="form-group"><label for="face-structure-lc">Face Structure</label><textarea id="face-structure-lc" name="subject.face.structure">{{luxury_woman_car_data.subject.face.structure}}</textarea></div>
+                    <div class="form-group"><label for="face-skin-lc">Face Skin</label><textarea id="face-skin-lc" name="subject.face.skin">{{luxury_woman_car_data.subject.face.skin}}</textarea></div>
+                    <div class="form-group"><label for="eye-shape-lc">Eye Shape</label><textarea id="eye-shape-lc" name="subject.face.eyes.shape">{{luxury_woman_car_data.subject.face.eyes.shape}}</textarea></div>
+                    <div class="form-group"><label for="eye-color-lc">Eye Color</label><textarea id="eye-color-lc" name="subject.face.eyes.color">{{luxury_woman_car_data.subject.face.eyes.color}}</textarea></div>
+                    <div class="form-group"><label for="eye-expression-lc">Eye Expression</label><textarea id="eye-expression-lc" name="subject.face.eyes.expression">{{luxury_woman_car_data.subject.face.eyes.expression}}</textarea></div>
+                    <div class="form-group"><label for="mouth-lc">Mouth Lips</label><textarea id="mouth-lc" name="subject.face.mouth.lips">{{luxury_woman_car_data.subject.face.mouth.lips}}</textarea></div>
+                    <div class="form-group"><label for="makeup-lc">Makeup</label><textarea id="makeup-lc" name="subject.face.makeup">{{luxury_woman_car_data.subject.face.makeup}}</textarea></div>
+                    <div class="form-group"><label for="hair-color-lc">Hair Color</label><textarea id="hair-color-lc" name="subject.hair.color">{{luxury_woman_car_data.subject.hair.color}}</textarea></div>
+                    <div class="form-group"><label for="hair-length-lc">Hair Length</label><textarea id="hair-length-lc" name="subject.hair.length">{{luxury_woman_car_data.subject.hair.length}}</textarea></div>
+                    <div class="form-group"><label for="hair-texture-lc">Hair Texture</label><textarea id="hair-texture-lc" name="subject.hair.texture">{{luxury_woman_car_data.subject.hair.texture}}</textarea></div>
+                    <div class="form-group"><label for="hair-style-lc">Hair Style</label><textarea id="hair-style-lc" name="subject.hair.style">{{luxury_woman_car_data.subject.hair.style}}</textarea></div>
+                    <div class="form-group"><label for="hair-shine-lc">Hair Shine</label><textarea id="hair-shine-lc" name="subject.hair.shine">{{luxury_woman_car_data.subject.hair.shine}}</textarea></div>
+                </div>
+                <div id="pose-lc" class="tab-content">
+                    <div class="form-group"><label for="pose-overall-lc">Overall</label><textarea id="pose-overall-lc" name="pose.overall">{{luxury_woman_car_data.pose.overall}}</textarea></div>
+                    <div class="form-group"><label for="pose-base-lc">Base</label><textarea id="pose-base-lc" name="pose.position.base">{{luxury_woman_car_data.pose.position.base}}</textarea></div>
+                    <div class="form-group"><label for="pose-orientation-lc">Orientation</label><textarea id="pose-orientation-lc" name="pose.position.orientation">{{luxury_woman_car_data.pose.position.orientation}}</textarea></div>
+                    <div class="form-group"><label for="pose-direction-lc">Torso Direction</label><textarea id="pose-direction-lc" name="pose.torso.direction">{{luxury_woman_car_data.pose.torso.direction}}</textarea></div>
+                    <div class="form-group"><label for="pose-curve-lc">Torso Curve</label><textarea id="pose-curve-lc" name="pose.torso.curve">{{luxury_woman_car_data.pose.torso.curve}}</textarea></div>
+                    <div class="form-group"><label for="pose-exposure-lc">Torso Exposure</label><textarea id="pose-exposure-lc" name="pose.torso.exposure">{{luxury_woman_car_data.pose.torso.exposure}}</textarea></div>
+                    <div class="form-group"><label for="arms-right-lc">Right Arm</label><textarea id="arms-right-lc" name="pose.arms.right">{{luxury_woman_car_data.pose.arms.right}}</textarea></div>
+                    <div class="form-group"><label for="arms-left-lc">Left Arm</label><textarea id="arms-left-lc" name="pose.arms.left">{{luxury_woman_car_data.pose.arms.left}}</textarea></div>
+                    <div class="form-group"><label for="hands-lc">Hands</label><textarea id="hands-lc" name="pose.arms.hands">{{luxury_woman_car_data.pose.arms.hands}}</textarea></div>
+                    <div class="form-group"><label for="legs-lc">Legs</label><textarea id="legs-lc" name="pose.legs.position">{{luxury_woman_car_data.pose.legs.position}}</textarea></div>
+                    <div class="form-group"><label for="legs-visible-lc">Legs Visible</label><textarea id="legs-visible-lc" name="pose.legs.visible">{{luxury_woman_car_data.pose.legs.visible}}</textarea></div>
+                    <div class="form-group"><label for="head-turn-lc">Head Turn</label><textarea id="head-turn-lc" name="pose.head.turn">{{luxury_woman_car_data.pose.head.turn}}</textarea></div>
+                    <div class="form-group"><label for="head-expression-lc">Head Expression</label><textarea id="head-expression-lc" name="pose.head.expression">{{luxury_woman_car_data.pose.head.expression}}</textarea></div>
+                </div>
+                <div id="outfit-lc" class="tab-content">
+                    <div class="form-group"><label for="top-type-lc">Top Type</label><textarea id="top-type-lc" name="outfit.top.type">{{luxury_woman_car_data.outfit.top.type}}</textarea></div>
+                    <div class="form-group"><label for="top-fit-lc">Top Fit</label><textarea id="top-fit-lc" name="outfit.top.fit">{{luxury_woman_car_data.outfit.top.fit}}</textarea></div>
+                    <div class="form-group"><label for="top-neckline-lc">Top Neckline</label><textarea id="top-neckline-lc" name="outfit.top.neckline">{{luxury_woman_car_data.outfit.top.neckline}}</textarea></div>
+                    <div class="form-group"><label for="top-length-lc">Top Length</label><textarea id="top-length-lc" name="outfit.top.length">{{luxury_woman_car_data.outfit.top.length}}</textarea></div>
+                    <div class="form-group"><label for="bottom-type-lc">Bottom Type</label><textarea id="bottom-type-lc" name="outfit.bottom.type">{{luxury_woman_car_data.outfit.bottom.type}}</textarea></div>
+                    <div class="form-group"><label for="bottom-pattern-lc">Bottom Pattern</label><textarea id="bottom-pattern-lc" name="outfit.bottom.pattern">{{luxury_woman_car_data.outfit.bottom.pattern}}</textarea></div>
+                    <div class="form-group"><label for="bottom-colors-lc">Bottom Colors</label><textarea id="bottom-colors-lc" name="outfit.bottom.colors">{{luxury_woman_car_data.outfit.bottom.colors}}</textarea></div>
+                    <div class="form-group"><label for="bottom-length-lc">Bottom Length</label><textarea id="bottom-length-lc" name="outfit.bottom.length">{{luxury_woman_car_data.outfit.bottom.length}}</textarea></div>
+                    <div class="form-group"><label for="bottom-fit-lc">Bottom Fit</label><textarea id="bottom-fit-lc" name="outfit.bottom.fit">{{luxury_woman_car_data.outfit.bottom.fit}}</textarea></div>
+                    <div class="form-group"><label for="legwear-type-lc">Legwear Type</label><textarea id="legwear-type-lc" name="outfit.legwear.type">{{luxury_woman_car_data.outfit.legwear.type}}</textarea></div>
+                    <div class="form-group"><label for="legwear-opacity-lc">Legwear Opacity</label><textarea id="legwear-opacity-lc" name="outfit.legwear.opacity">{{luxury_woman_car_data.outfit.legwear.opacity}}</textarea></div>
+                </div>
+                <div id="body-lc" class="tab-content">
+                    <div class="form-group"><label for="body-type-lc">Body Type</label><textarea id="body-type-lc" name="body.type">{{luxury_woman_car_data.body.type}}</textarea></div>
+                    <div class="form-group"><label for="body-back-lc">Back</label><textarea id="body-back-lc" name="body.back">{{luxury_woman_car_data.body.back}}</textarea></div>
+                    <div class="form-group"><label for="body-skin-lc">Skin</label><textarea id="body-skin-lc" name="body.skin">{{luxury_woman_car_data.body.skin}}</textarea></div>
+                </div>
+                <div id="environment-lc" class="tab-content">
+                    <div class="form-group"><label for="environment-location-lc">Location</label><textarea id="environment-location-lc" name="environment.location">{{luxury_woman_car_data.environment.location}}</textarea></div>
+                    <div class="form-group"><label for="seats-lc">Seats</label><textarea id="seats-lc" name="environment.car_interior.seats">{{luxury_woman_car_data.environment.car_interior.seats}}</textarea></div>
+                    <div class="form-group"><label for="car-style-lc">Car Style</label><textarea id="car-style-lc" name="environment.car_interior.style">{{luxury_woman_car_data.environment.car_interior.style}}</textarea></div>
+                    <div class="form-group"><label for="console-lc">Console</label><textarea id="console-lc" name="environment.car_interior.console">{{luxury_woman_car_data.environment.car_interior.console}}</textarea></div>
+                    <div class="form-group"><label for="steering-lc">Steering</label><textarea id="steering-lc" name="environment.car_interior.steering">{{luxury_woman_car_data.environment.car_interior.steering}}</textarea></div>
+                    <div class="form-group"><label for="background-lc">Background</label><textarea id="background-lc" name="environment.view_through_window.background">{{luxury_woman_car_data.environment.view_through_window.background}}</textarea></div>
+                    <div class="form-group"><label for="trees-lc">Trees</label><textarea id="trees-lc" name="environment.view_through_window.trees">{{luxury_woman_car_data.environment.view_through_window.trees}}</textarea></div>
+                    <div class="form-group"><label for="window-lighting-lc">Lighting</label><textarea id="window-lighting-lc" name="environment.view_through_window.lighting">{{luxury_woman_car_data.environment.view_through_window.lighting}}</textarea></div>
+                </div>
+                <div id="lighting-lc" class="tab-content">
+                    <div class="form-group"><label for="lighting-type-lc">Type</label><textarea id="lighting-type-lc" name="lighting.type">{{luxury_woman_car_data.lighting.type}}</textarea></div>
+                    <div class="form-group"><label for="lighting-intensity-lc">Intensity</label><textarea id="lighting-intensity-lc" name="lighting.quality.intensity">{{luxury_woman_car_data.lighting.quality.intensity}}</textarea></div>
+                    <div class="form-group"><label for="lighting-direction-lc">Direction</label><textarea id="lighting-direction-lc" name="lighting.quality.direction">{{luxury_woman_car_data.lighting.quality.direction}}</textarea></div>
+                    <div class="form-group"><label for="lighting-skin-lc">On Subject Skin</label><textarea id="lighting-skin-lc" name="lighting.on_subject.skin">{{luxury_woman_car_data.lighting.on_subject.skin}}</textarea></div>
+                    <div class="form-group"><label for="lighting-hair-lc">On Subject Hair</label><textarea id="lighting-hair-lc" name="lighting.on_subject.hair">{{luxury_woman_car_data.lighting.on_subject.hair}}</textarea></div>
+                </div>
+                <div id="photo-lc" class="tab-content">
+                    <div class="form-group"><label for="angle-lc">Angle</label><textarea id="angle-lc" name="photography.angle">{{luxury_woman_car_data.photography.angle}}</textarea></div>
+                    <div class="form-group"><label for="framing-lc">Framing</label><textarea id="framing-lc" name="photography.framing">{{luxury_woman_car_data.photography.framing}}</textarea></div>
+                    <div class="form-group"><label for="focus-lc">Focus</label><textarea id="focus-lc" name="photography.focus">{{luxury_woman_car_data.photography.focus}}</textarea></div>
+                    <div class="form-group"><label for="style-lc">Style</label><textarea id="style-lc" name="photography.style">{{luxury_woman_car_data.photography.style}}</textarea></div>
+                </div>
+                <div id="palette-lc" class="tab-content">
+                    <div class="form-group"><label for="palette-hair-lc">Hair</label><textarea id="palette-hair-lc" name="color_palette.subject.hair">{{luxury_woman_car_data.color_palette.subject.hair}}</textarea></div>
+                    <div class="form-group"><label for="palette-skin-lc">Skin</label><textarea id="palette-skin-lc" name="color_palette.subject.skin">{{luxury_woman_car_data.color_palette.subject.skin}}</textarea></div>
+                    <div class="form-group"><label for="palette-top-lc">Top</label><textarea id="palette-top-lc" name="color_palette.subject.top">{{luxury_woman_car_data.color_palette.subject.top}}</textarea></div>
+                    <div class="form-group"><label for="palette-skirt-lc">Skirt</label><textarea id="palette-skirt-lc" name="color_palette.subject.skirt">{{luxury_woman_car_data.color_palette.subject.skirt}}</textarea></div>
+                    <div class="form-group"><label for="palette-tights-lc">Tights</label><textarea id="palette-tights-lc" name="color_palette.subject.tights">{{luxury_woman_car_data.color_palette.subject.tights}}</textarea></div>
+                    <div class="form-group"><label for="palette-interior-lc">Interior</label><textarea id="palette-interior-lc" name="color_palette.environment.interior">{{luxury_woman_car_data.color_palette.environment.interior}}</textarea></div>
+                    <div class="form-group"><label for="palette-outside-lc">Outside</label><textarea id="palette-outside-lc" name="color_palette.environment.outside">{{luxury_woman_car_data.color_palette.environment.outside}}</textarea></div>
+                </div>
+                <div id="vibe-lc" class="tab-content">
+                    <div class="form-group"><label for="energy-lc">Energy</label><textarea id="energy-lc" name="vibe.energy">{{luxury_woman_car_data.vibe.energy}}</textarea></div>
+                    <div class="form-group"><label for="mood-lc">Mood</label><textarea id="mood-lc" name="vibe.mood">{{luxury_woman_car_data.vibe.mood}}</textarea></div>
+                    <div class="form-group"><label for="aesthetic-lc">Aesthetic</label><textarea id="aesthetic-lc" name="vibe.aesthetic">{{luxury_woman_car_data.vibe.aesthetic}}</textarea></div>
+                </div>
+                <div id="critical-lc" class="tab-content">
+                    <div class="form-group"><label for="critical-hair-lc">Hair</label><textarea id="critical-hair-lc" name="critical_requirements.HAIR">{{luxury_woman_car_data.critical_requirements.HAIR}}</textarea></div>
+                    <div class="form-group"><label for="critical-face-lc">Face</label><textarea id="critical-face-lc" name="critical_requirements.FACE">{{luxury_woman_car_data.critical_requirements.FACE}}</textarea></div>
+                    <div class="form-group"><label for="critical-pose-lc">Pose</label><textarea id="critical-pose-lc" name="critical_requirements.POSE">{{luxury_woman_car_data.critical_requirements.POSE}}</textarea></div>
+                    <div class="form-group"><label for="critical-top-lc">Top</label><textarea id="critical-top-lc" name="critical_requirements.TOP">{{luxury_woman_car_data.critical_requirements.TOP}}</textarea></div>
+                    <div class="form-group"><label for="critical-skirt-lc">Skirt</label><textarea id="critical-skirt-lc" name="critical_requirements.SKIRT">{{luxury_woman_car_data.critical_requirements.SKIRT}}</textarea></div>
+                    <div class="form-group"><label for="critical-tights-lc">Tights</label><textarea id="critical-tights-lc" name="critical_requirements.TIGHTS">{{luxury_woman_car_data.critical_requirements.TIGHTS}}</textarea></div>
+                    <div class="form-group"><label for="critical-setting-lc">Setting</label><textarea id="critical-setting-lc" name="critical_requirements.SETTING">{{luxury_woman_car_data.critical_requirements.SETTING}}</textarea></div>
+                    <div class="form-group"><label for="critical-angle-lc">Angle</label><textarea id="critical-angle-lc" name="critical_requirements.ANGLE">{{luxury_woman_car_data.critical_requirements.ANGLE}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

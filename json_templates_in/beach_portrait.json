@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "aspect_ratio": "4:5",
+    "quality": "ultra-photorealistic, high-end raw photography, rigid constraint compliance, 8k resolution",
+    "style": "A photorealistic, millimeter-perfect replication of a specific outdoor beach portrait. Every single detail of the subject, pose, lighting, textures, and environment must be exactly as depicted in the detailed description."
+  },
+  "subject": {
+    "identity": "A specific platinum blonde woman with striking blue/grey eyes.",
+    "face_details": {
+      "expression": "A natural, direct gaze looking into the camera with a slight, confident allure.",
+      "skin": "**AUTHENTIC WET SKIN:** Sun-kissed, tanned skin texture that is visibly wet from the ocean, showing genuine water droplets, salt residue, and realistic pores under bright sun. No smoothing or plastic effect.",
+      "eyes": "Striking blue/grey eyes catching the sunlight."
+    },
+    "hair": {
+      "style": "**STRICT CONSTRAINT:** Platinum blonde hair that is tousled, messy, and wet from saltwater, with individual strands clumping together. Her right hand is lifting the hair on the right side of her head.",
+      "color": "Platinum blonde with natural root variations, highly textured due to wetness."
+    },
+    "body": {
+      "physique": "**STRICT CONSTRAINT:** An exact athletic, curvaceous body shape and measurements consistent with the described subject.",
+      "pose": "**EXACT REPLICA POSE:** Standing full-body on rugged rocks. Right hand in hair, left hand resting firmly on the left hip. Right leg straight, left leg slightly bent and forward. Body angled slightly to the right."
+    },
+    "outfit": {
+      "attire": "**STRICT CONSTRAINT:** The exact light pink string bikini consisting of a triangle top and matching side-tie bottoms, worn exactly as described."
+    }
+  },
+  "environment": {
+    "location": "**EXACT REPLICA SETTING:** A rocky shoreline at the edge of the sea matching the detailed description.",
+    "foreground": "Large, rough, heavily textured granite-like rocks that are wet and dark near the waterline.",
+    "background": "Clear, vibrant turquoise ocean water with gentle agitation and small splashes around the rocks. In the distance, a cliff face covered in dense green vegetation under a clear, bright blue sky."
+  },
+  "lighting": {
+    "type": "**EXACT REPLICA LIGHTING:** Harsh, direct, high-noon natural sunlight from the top right.",
+    "quality": "Hard light creating sharp, defined shadows on the rocks and body, and intense specular highlights on the wet skin, wet hair, and water surface."
+  },
+  "realism_focus": {
+    "textures": "**CRITICAL DETAIL FOCUS:** Extreme photorealism on the wetness of the skin and hair strands, the rough and abrasive texture of the wet rocks, the transparency and movement of the turquoise water, and the fabric weave of the bikini under harsh sunlight."
+  }
+}

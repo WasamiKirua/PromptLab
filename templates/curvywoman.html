@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 100px; resize: vertical; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        .tab-nav {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tab-link {
+            background-color: #f0cfe0;
+            color: #6f5d59;
+            padding: 0.6rem 1.2rem;
+            margin-right: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+        }
+        .tab-link.active {
+            background-color: #ff8fb8;
+            color: #fff6f2;
+        }
+        .tab-link:hover:not(.active) {
+            background-color: #ffe1ee;
+            color: #fff;
+        }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>Curvy Woman</h1>
+            <form id="forge-form" action="/curvywoman" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/curvy_woman.png" alt="Template preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'style-cw')">Style</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-cw')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'pose-cw')">Pose</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'framing-cw')">Framing</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'environment-cw')">Environment</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'emphasis-cw')">Emphasis</button>
+                </div>
+                <div id="style-cw" class="tab-content active">
+                    <div class="form-group"><label for="style-realism-cw">Realism</label><input type="text" id="style-realism-cw" name="style.realism" value="{{curvy_woman_data.style.realism}}"></div>
+                    <div class="form-group"><label for="style-cinematic-cw">Cinematic</label><input type="text" id="style-cinematic-cw" name="style.cinematic" value="{{curvy_woman_data.style.cinematic}}"></div>
+                    <div class="form-group"><label for="style-angle-cw">Camera Angle</label><input type="text" id="style-angle-cw" name="style.camera_angle" value="{{curvy_woman_data.style.camera_angle}}"></div>
+                    <div class="form-group"><label for="style-ar-cw">Aspect Ratio</label><input type="text" id="style-ar-cw" name="style.aspect_ratio" value="{{curvy_woman_data.style.aspect_ratio}}"></div>
+                    <div class="form-group"><label for="style-dof-cw">Depth of Field</label><input type="text" id="style-dof-cw" name="style.depth_of_field" value="{{curvy_woman_data.style.depth_of_field}}"></div>
+                </div>
+                <div id="subject-cw" class="tab-content">
+                    <div class="form-group"><label for="subject-gender-cw">Gender</label><input type="text" id="subject-gender-cw" name="subject.gender" value="{{curvy_woman_data.subject.gender}}"></div>
+                    <div class="form-group"><label for="subject-skin-cw">Skin Tone</label><input type="text" id="subject-skin-cw" name="subject.appearance.skin_tone" value="{{curvy_woman_data.subject.appearance.skin_tone}}"></div>
+                    <div class="form-group"><label for="subject-body-cw">Body Type</label><input type="text" id="subject-body-cw" name="subject.appearance.body_type" value="{{curvy_woman_data.subject.appearance.body_type}}"></div>
+                    <div class="form-group"><label for="subject-abdomen-cw">Abdomen</label><input type="text" id="subject-abdomen-cw" name="subject.appearance.abdomen" value="{{curvy_woman_data.subject.appearance.abdomen}}"></div>
+                    <div class="form-group"><label for="subject-accessories-cw">Accessories</label><textarea id="subject-accessories-cw" name="subject.accessories">{{curvy_woman_data.subject.accessories | tojson}}</textarea></div>
+                </div>
+                <div id="pose-cw" class="tab-content">
+                    <div class="form-group"><label for="pose-overall-cw">Overall Posture</label><input type="text" id="pose-overall-cw" name="pose.overall_posture" value="{{curvy_woman_data.pose.overall_posture}}"></div>
+                    <div class="form-group"><label for="pose-left-arm-cw">Left Arm Position</label><input type="text" id="pose-left-arm-cw" name="pose.left_arm.position" value="{{curvy_woman_data.pose.left_arm.position}}"></div>
+                    <div class="form-group"><label for="pose-left-interaction-cw">Left Arm Interaction</label><input type="text" id="pose-left-interaction-cw" name="pose.left_arm.interaction" value="{{curvy_woman_data.pose.left_arm.interaction}}"></div>
+                    <div class="form-group"><label for="pose-right-hand-cw">Right Hand Position</label><input type="text" id="pose-right-hand-cw" name="pose.right_hand.position" value="{{curvy_woman_data.pose.right_hand.position}}"></div>
+                    <div class="form-group"><label for="pose-right-interaction-cw">Right Hand Interaction</label><input type="text" id="pose-right-interaction-cw" name="pose.right_hand.interaction" value="{{curvy_woman_data.pose.right_hand.interaction}}"></div>
+                </div>
+                <div id="framing-cw" class="tab-content">
+                    <div class="form-group"><label for="framing-comp-cw">Composition</label><input type="text" id="framing-comp-cw" name="framing.composition" value="{{curvy_woman_data.framing.composition}}"></div>
+                    <div class="form-group"><label for="framing-camera-cw">Camera Position</label><input type="text" id="framing-camera-cw" name="framing.camera_position" value="{{curvy_woman_data.framing.camera_position}}"></div>
+                    <div class="form-group"><label for="framing-focus-cw">Focus Progression</label><textarea id="framing-focus-cw" name="framing.focus_progression">{{curvy_woman_data.framing.focus_progression | join(', ')}}</textarea></div>
+                </div>
+                <div id="environment-cw" class="tab-content">
+                    <div class="form-group"><label for="environment-location-cw">Location</label><input type="text" id="environment-location-cw" name="environment.location" value="{{curvy_woman_data.environment.location}}"></div>
+                    <div class="form-group"><label for="environment-objects-cw">Objects</label><textarea id="environment-objects-cw" name="environment.objects">{{curvy_woman_data.environment.objects | join(', ')}}</textarea></div>
+                </div>
+                <div id="emphasis-cw" class="tab-content">
+                    <div class="form-group"><label for="emphasis-cw">Visual Emphasis</label><textarea id="emphasis-cw" name="visual_emphasis">{{curvy_woman_data.visual_emphasis | join(', ')}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

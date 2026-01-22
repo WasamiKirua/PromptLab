@@ -1,0 +1,42 @@
+{
+  "prompt_type": "Ultra Photorealistic Image Generation",
+  "subject": {
+    "description": "Young woman with a bold, high-fashion edgy look",
+    "hair": "Shoulder-length, wet-look texture, platinum grey/silver color, swept back loosely with strands falling near the face",
+    "face": "Defined jawline, Fair skin tone, sultry expression",
+    "makeup": "Heavy dramatic smoky eye makeup with black eyeliner, contoured cheeks, matte nude lips with defined lipliner"
+  },
+  "styling": {
+    "clothing": "Black leather strapless corset top with a plunging sweetheart neckline and visible stitching details",
+    "accessories": [
+      "Thick black choker necklace",
+      "Thin silver chain necklace",
+      "Multiple silver ear piercings including hoops and studs on the left ear"
+    ]
+  },
+  "pose": {
+    "body_position": "Medium shot from the chest up, slightly angled",
+    "head_position": "Head tilted back slightly with chin up",
+    "gaze": "Looking down at the camera with a confident, piercing gaze (bedroom eyes)"
+  },
+  "environment": {
+    "background": "Deep red studio backdrop",
+    "elements": "Circular spotlight projection on the wall behind the subject, creating a vignetted effect"
+  },
+  "lighting": {
+    "type": "Hard dramatic studio lighting (spotlight)",
+    "effects": "High contrast, distinct sharp shadow cast by the subject on the red background to the left, highlights on the collarbone, shoulders, and forehead"
+  },
+  "mood": {
+    "atmosphere": "Sultry, intense, cinematic, edgy, confident, rock-chic aesthetic"
+  },
+  "technical_specs": {
+    "camera": "Sony A7R V",
+    "lens": "85mm Portrait Lens",
+    "aperture": "f/1.8",
+    "shutter_speed": "1/125",
+    "iso": "100",
+    "resolution": "8k",
+    "quality": "Ultra-detailed skin texture, realistic lighting falloff, sharp focus on eyes, hyper-realistic"
+  }
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 100px; resize: vertical; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        .tab-nav {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tab-link {
+            background-color: #f0cfe0;
+            color: #6f5d59;
+            padding: 0.6rem 1.2rem;
+            margin-right: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+        }
+        .tab-link.active {
+            background-color: #ff8fb8;
+            color: #fff6f2;
+        }
+        .tab-link:hover:not(.active) {
+            background-color: #ffe1ee;
+            color: #fff;
+        }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>Otaku Corner</h1>
+            <form id="forge-form" action="/otakucorner" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/otaku_corner.png" alt="Template preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'scene-oc')">Scene</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-oc')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'environment-oc')">Environment</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'lighting-oc')">Lighting</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'camera-oc')">Camera</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'negatives-oc')">Negatives</button>
+                </div>
+                <div id="scene-oc" class="tab-content active">
+                    <div class="form-group"><label for="scene-oc">Scene</label><input type="text" id="scene-oc" name="scene" value="{{otaku_corner_data.scene}}"></div>
+                </div>
+                <div id="subject-oc" class="tab-content">
+                    <div class="form-group"><label for="subject-gender-oc">Gender Presentation</label><input type="text" id="subject-gender-oc" name="subject.gender_presentation" value="{{otaku_corner_data.subject.gender_presentation}}"></div>
+                    <div class="form-group"><label for="subject-age-oc">Age Bracket</label><input type="text" id="subject-age-oc" name="subject.age_bracket" value="{{otaku_corner_data.subject.age_bracket}}"></div>
+                    <div class="form-group"><label for="subject-ethnicity-oc">Ethnicity</label><input type="text" id="subject-ethnicity-oc" name="subject.ethnicity" value="{{otaku_corner_data.subject.ethnicity}}"></div>
+                    <div class="form-group"><label for="subject-build-oc">Build</label><input type="text" id="subject-build-oc" name="subject.build" value="{{otaku_corner_data.subject.build}}"></div>
+                    <div class="form-group"><label for="subject-skin-oc">Skin Tone</label><input type="text" id="subject-skin-oc" name="subject.skin_tone" value="{{otaku_corner_data.subject.skin_tone}}"></div>
+                    <div class="form-group"><label for="subject-hair-length-oc">Hair Length</label><input type="text" id="subject-hair-length-oc" name="subject.hair.length" value="{{otaku_corner_data.subject.hair.length}}"></div>
+                    <div class="form-group"><label for="subject-hair-style-oc">Hair Style</label><input type="text" id="subject-hair-style-oc" name="subject.hair.style" value="{{otaku_corner_data.subject.hair.style}}"></div>
+                    <div class="form-group"><label for="subject-hair-color-oc">Hair Color</label><input type="text" id="subject-hair-color-oc" name="subject.hair.color" value="{{otaku_corner_data.subject.hair.color}}"></div>
+                    <div class="form-group"><label for="pose-stance-oc">Pose Stance</label><input type="text" id="pose-stance-oc" name="subject.pose.stance" value="{{otaku_corner_data.subject.pose.stance}}"></div>
+                    <div class="form-group"><label for="pose-right-hand-oc">Right Hand</label><input type="text" id="pose-right-hand-oc" name="subject.pose.right_hand" value="{{otaku_corner_data.subject.pose.right_hand}}"></div>
+                    <div class="form-group"><label for="pose-left-arm-oc">Left Arm</label><input type="text" id="pose-left-arm-oc" name="subject.pose.left_arm" value="{{otaku_corner_data.subject.pose.left_arm}}"></div>
+                    <div class="form-group"><label for="pose-torso-oc">Torso</label><input type="text" id="pose-torso-oc" name="subject.pose.torso" value="{{otaku_corner_data.subject.pose.torso}}"></div>
+                    <div class="form-group"><label for="wardrobe-top-oc">Top</label><input type="text" id="wardrobe-top-oc" name="subject.wardrobe.top" value="{{otaku_corner_data.subject.wardrobe.top}}"></div>
+                    <div class="form-group"><label for="wardrobe-bottom-oc">Bottom</label><input type="text" id="wardrobe-bottom-oc" name="subject.wardrobe.bottom" value="{{otaku_corner_data.subject.wardrobe.bottom}}"></div>
+                    <div class="form-group"><label for="wardrobe-socks-oc">Socks</label><input type="text" id="wardrobe-socks-oc" name="subject.wardrobe.socks" value="{{otaku_corner_data.subject.wardrobe.socks}}"></div>
+                    <div class="form-group"><label for="wardrobe-phone-oc">Phone Case</label><input type="text" id="wardrobe-phone-oc" name="subject.wardrobe.accessories.phone_case" value="{{otaku_corner_data.subject.wardrobe.accessories.phone_case}}"></div>
+                </div>
+                <div id="environment-oc" class="tab-content">
+                    <div class="form-group"><label for="env-desc-oc">Description</label><textarea id="env-desc-oc" name="environment.description">{{otaku_corner_data.environment.description}}</textarea></div>
+                    <div class="form-group"><label for="env-furnishings-oc">Furnishings</label><textarea id="env-furnishings-oc" name="environment.furnishings">{{otaku_corner_data.environment.furnishings | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="env-color-swap-oc">Color Swap</label><textarea id="env-color-swap-oc" name="environment.color_swap">{{otaku_corner_data.environment.color_swap}}</textarea></div>
+                </div>
+                <div id="lighting-oc" class="tab-content">
+                    <div class="form-group"><label for="lighting-source-oc">Source</label><input type="text" id="lighting-source-oc" name="lighting.source" value="{{otaku_corner_data.lighting.source}}"></div>
+                    <div class="form-group"><label for="lighting-quality-oc">Quality</label><input type="text" id="lighting-quality-oc" name="lighting.quality" value="{{otaku_corner_data.lighting.quality}}"></div>
+                    <div class="form-group"><label for="lighting-wb-oc">White Balance (K)</label><input type="text" id="lighting-wb-oc" name="lighting.white_balance_K" value="{{otaku_corner_data.lighting.white_balance_K}}"></div>
+                </div>
+                <div id="camera-oc" class="tab-content">
+                    <div class="form-group"><label for="camera-mode-oc">Mode</label><input type="text" id="camera-mode-oc" name="camera.mode" value="{{otaku_corner_data.camera.mode}}"></div>
+                    <div class="form-group"><label for="camera-focal-oc">Focal Length (mm)</label><input type="text" id="camera-focal-oc" name="camera.focal_length_eq_mm" value="{{otaku_corner_data.camera.focal_length_eq_mm}}"></div>
+                    <div class="form-group"><label for="camera-distance-subject-oc">Subject to Mirror (m)</label><input type="text" id="camera-distance-subject-oc" name="camera.distance_m.subject_to_mirror" value="{{otaku_corner_data.camera.distance_m.subject_to_mirror}}"></div>
+                    <div class="form-group"><label for="camera-distance-camera-oc">Camera to Mirror (m)</label><input type="text" id="camera-distance-camera-oc" name="camera.distance_m.camera_to_mirror" value="{{otaku_corner_data.camera.distance_m.camera_to_mirror}}"></div>
+                    <div class="form-group"><label for="camera-aperture-oc">Aperture (f)</label><input type="text" id="camera-aperture-oc" name="camera.exposure.aperture_f" value="{{otaku_corner_data.camera.exposure.aperture_f}}"></div>
+                    <div class="form-group"><label for="camera-iso-oc">ISO</label><input type="text" id="camera-iso-oc" name="camera.exposure.iso" value="{{otaku_corner_data.camera.exposure.iso}}"></div>
+                    <div class="form-group"><label for="camera-shutter-oc">Shutter (s)</label><input type="text" id="camera-shutter-oc" name="camera.exposure.shutter_s" value="{{otaku_corner_data.camera.exposure.shutter_s}}"></div>
+                    <div class="form-group"><label for="camera-ev-oc">EV Comp</label><input type="text" id="camera-ev-oc" name="camera.exposure.ev_comp" value="{{otaku_corner_data.camera.exposure.ev_comp}}"></div>
+                    <div class="form-group"><label for="camera-focus-oc">Focus</label><input type="text" id="camera-focus-oc" name="camera.focus" value="{{otaku_corner_data.camera.focus}}"></div>
+                    <div class="form-group"><label for="camera-dof-oc">Depth of Field</label><input type="text" id="camera-dof-oc" name="camera.depth_of_field" value="{{otaku_corner_data.camera.depth_of_field}}"></div>
+                    <div class="form-group"><label for="camera-aspect-oc">Aspect Ratio</label><input type="text" id="camera-aspect-oc" name="camera.framing.aspect_ratio" value="{{otaku_corner_data.camera.framing.aspect_ratio}}"></div>
+                    <div class="form-group"><label for="camera-crop-oc">Crop</label><input type="text" id="camera-crop-oc" name="camera.framing.crop" value="{{otaku_corner_data.camera.framing.crop}}"></div>
+                    <div class="form-group"><label for="camera-angle-oc">Angle</label><input type="text" id="camera-angle-oc" name="camera.framing.angle" value="{{otaku_corner_data.camera.framing.angle}}"></div>
+                    <div class="form-group"><label for="camera-notes-oc">Composition Notes</label><textarea id="camera-notes-oc" name="camera.framing.composition_notes">{{otaku_corner_data.camera.framing.composition_notes}}</textarea></div>
+                </div>
+                <div id="negatives-oc" class="tab-content">
+                    <div class="form-group"><label for="negatives-oc">Negatives</label><textarea id="negatives-oc" name="negatives">{{otaku_corner_data.negatives | join(', ')}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

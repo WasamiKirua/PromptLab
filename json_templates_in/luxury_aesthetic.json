@@ -1,0 +1,55 @@
+{
+  "image_analysis": {
+    "type": "Photorealistic Portrait",
+    "style": "High-fashion, Elegant, Luxury aesthetic"
+  },
+  "subject": {
+    "demographics": "Young woman, estimated early 20s",
+    "physique": "Slim, fit figure with fair skinned tone",
+    "hair": "Long, dark brown, sleek and straight with a center part, draping behind shoulders",
+    "face": "Soft glam makeup, defined eyebrows, neutral to soft expression, looking slightly off-camera to the left"
+  },
+  "attire": {
+    "garment": "White off-the-shoulder mini dress",
+    "material": "Satin or silk finish with a sheen",
+    "design_details": [
+      "Sweetheart neckline with a prominent bow tied at the center bust",
+      "Ruched/corset-style fitted bodice",
+      "Puffed, bubble-hem skirt (voluminous and short)",
+      "Draped short sleeves resting on upper arms"
+    ],
+    "footwear": "Clear (transparent) strap high-heeled sandals showing white pedicure",
+    "accessories": "Minimalist silver stud earrings, simple rings"
+  },
+  "pose": {
+    "stance": "Standing on a staircase, weight shifted to the back leg, front leg stepped down and slightly forward",
+    "arms": "Relaxed at sides, fingers gently grazing the hem of the bubble skirt",
+    "angle": "Full-body shot, slightly low angle to accentuate leg length"
+  },
+  "environment": {
+    "location": "Grand interior staircase within a luxury building or mansion",
+    "architecture": [
+      "Beige/Cream marble steps",
+      "Ornate black wrought-iron railing with a polished wooden handrail on the left",
+      "Classic white wall paneling and molding",
+      "Black and white checkered marble flooring at the base"
+    ],
+    "decor": [
+      "Framed oil painting hanging on the upper wall",
+      "White plaster relief sculpture (draped fabric style) mounted on the wall directly behind the subject",
+      "Red upholstered chair visible in the upper background"
+    ]
+  },
+  "lighting_and_atmosphere": {
+    "lighting": "Warm, soft indoor ambient lighting",
+    "shadows": "Subtle shadows cast against the wall and stairs, highlighting the texture of the dress",
+    "mood": "Sophisticated, chic, opulent"
+  },
+  "technical_specifications": {
+    "quality": "4K Ultra HD, Photorealistic, Masterpiece",
+    "resolution": "High definition, sharp focus",
+    "texture_detail": "High fidelity fabric textures, skin texture, and marble reflections",
+    "camera_settings": "DSLR, portrait focal length (e.g., 85mm), shallow depth of field background"
+  }
+}
+

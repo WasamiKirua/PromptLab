@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CaptionToPrompt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cream: #fff6f2;
+        --ink: #2f2320;
+        --rose: #ff8fb8;
+        --rose-deep: #ff6ea6;
+        --sky: #7cc9ff;
+        --mint: #8ee9c5;
+        --lemon: #ffe28a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "M PLUS Rounded 1c", sans-serif;
+        background-color: var(--cream);
+        background-image:
+          radial-gradient(circle at 8% 12%, rgba(255, 224, 240, 0.9), transparent 45%),
+          radial-gradient(circle at 88% 10%, rgba(255, 236, 193, 0.8), transparent 38%),
+          radial-gradient(circle at 20% 80%, rgba(194, 238, 255, 0.75), transparent 40%),
+          radial-gradient(circle at 80% 78%, rgba(197, 255, 228, 0.7), transparent 45%);
+      }
+
+      .nav-shell {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 1.25rem 1.5rem 0.5rem;
+      }
+
+      .nav-bar {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: 1rem 1.5rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 18px 40px rgba(255, 142, 186, 0.18);
+        border: 1px solid rgba(255, 143, 184, 0.4);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav-logo {
+        font-family: "Cherry Bomb One", cursive;
+        font-size: 1.3rem;
+        letter-spacing: 0.02em;
+        color: var(--ink);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.4rem 0.6rem 1.1rem;
+        border-radius: 999px;
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--ink);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 246, 242, 0.8));
+        border: 1px solid rgba(255, 143, 184, 0.4);
+        box-shadow: 0 10px 24px rgba(124, 201, 255, 0.18);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+
+      .nav-links a::before {
+        content: "";
+        width: 0.55rem;
+        height: 0.55rem;
+        border-radius: 50%;
+        background: var(--lemon);
+        box-shadow: 0 0 0 4px rgba(255, 226, 138, 0.35);
+      }
+
+      .nav-links a[aria-current="page"] {
+        background: linear-gradient(135deg, rgba(255, 143, 184, 0.35), rgba(255, 226, 138, 0.3));
+        border-color: rgba(255, 110, 166, 0.65);
+        box-shadow: 0 18px 30px rgba(255, 143, 184, 0.25);
+      }
+
+      .nav-links a:hover {
+        transform: translateY(-2px) scale(1.02);
+        border-color: rgba(255, 110, 166, 0.65);
+        box-shadow: 0 14px 28px rgba(255, 143, 184, 0.2);
+      }
+
+      .nav-links a:focus-visible {
+        outline: 2px solid var(--rose);
+        outline-offset: 3px;
+      }
+
+      .readout {
+        font-family: "Space Mono", monospace;
+        line-height: 1.6;
+        letter-spacing: 0.01em;
+      }
+
+      .toggle {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .toggle input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+      }
+
+      .toggle-track {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        border-radius: 999px;
+        background: rgba(255, 143, 184, 0.25);
+        border: 1px solid rgba(255, 143, 184, 0.45);
+        transition: background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .toggle-thumb {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(255, 143, 184, 0.35);
+        transition: transform 0.2s ease;
+      }
+
+      .toggle input:checked + .toggle-track {
+        background: linear-gradient(135deg, #ff8fb8, #ff6ea6);
+        border-color: #ff6ea6;
+      }
+
+      .toggle input:checked + .toggle-track .toggle-thumb {
+        transform: translateX(20px);
+      }
+
+      .toggle input:focus-visible + .toggle-track {
+        outline: 2px solid rgba(255, 143, 184, 0.5);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 640px) {
+        .nav-bar {
+          flex-direction: column;
+          border-radius: 24px;
+        }
+
+        .nav-links {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#fff6f2] text-slate-800 font-sans">
+    <div class="nav-shell">
+      <nav class="nav-bar" aria-label="Primary">
+        <a class="nav-logo" href="/">CaptionToPrompt</a>
+        <div class="nav-links">
+          <a href="/nano-banana">NanoBanana</a>
+          <a href="/caption-to-prompt" aria-current="page">CaptionToPrompt</a>
+          <a href="/text-to-prompt">TextToPrompt</a>
+          <a href="/">Home</a>
+        </div>
+      </nav>
+    </div>
+    <main class="mx-auto min-h-[70vh] max-w-5xl px-6 pb-16">
+      <div class="mt-4 grid gap-6 lg:grid-cols-2">
+        <section class="rounded-[32px] border border-rose-200 bg-white/80 p-6 shadow-[0_20px_50px_rgba(255,143,184,0.18)] sm:p-8">
+          <div class="mb-6 flex items-center gap-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#ffe28a] text-lg">✨</span>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#ff8fb8]">Configuration</p>
+              <h2 class="text-2xl font-semibold text-[#2f2320]">Service Setup</h2>
+            </div>
+          </div>
+          <form
+            class="grid gap-6 md:grid-cols-2"
+            method="post"
+            action="/settings"
+            data-gemini-key="{{ gemini_api_key }}"
+            data-grok-key="{{ grok_api_key }}"
+            data-openai-key="{{ openai_api_key }}"
+          >
+            <div>
+              <label class="mb-2 block text-sm font-medium text-[#2f2320]" for="service-select">Service</label>
+              <div class="relative">
+                <select
+                  id="service-select"
+                  name="service"
+                  class="h-12 w-full appearance-none rounded-2xl border border-rose-200 bg-white/90 px-4 py-3 text-sm font-semibold text-[#2f2320] shadow-sm focus:border-[#ff6ea6] focus:outline-none focus:ring-2 focus:ring-[#ff8fb8]/40"
+                >
+                  <option value="gemini" {% if selected_service == "gemini" %}selected{% endif %}>Gemini</option>
+                  <option value="grok" {% if selected_service == "grok" %}selected{% endif %}>Grok (xAI)</option>
+                  <option value="openai" {% if selected_service == "openai" %}selected{% endif %}>OpenAI</option>
+                </select>
+                <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#ff8fb8]">▾</span>
+              </div>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-[#2f2320]" for="api-key">API Key</label>
+              <input
+                id="api-key"
+                name="api_key"
+                type="password"
+                placeholder="Paste your key"
+                value="{{ service_api_key }}"
+                class="h-12 w-full rounded-2xl border border-rose-200 bg-white/90 px-4 py-3 text-sm text-[#2f2320] shadow-sm focus:border-[#ff6ea6] focus:outline-none focus:ring-2 focus:ring-[#ff8fb8]/40"
+              />
+            </div>
+            <div class="md:col-span-2">
+              <p class="text-xs font-medium text-slate-600">Settings save automatically.</p>
+            </div>
+          </form>
+        </section>
+        <section class="rounded-[28px] border border-rose-200 bg-white/70 p-6 shadow-[0_18px_40px_rgba(255,143,184,0.15)] sm:p-8">
+          <div class="mb-5 flex items-center gap-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#8ee9c5] text-lg">🎯</span>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#ff8fb8]">Target Base Model</p>
+              <h3 class="text-xl font-semibold text-[#2f2320]">Choose the output style</h3>
+            </div>
+          </div>
+          <div class="max-w-xl">
+            <label class="mb-2 block text-sm font-medium text-[#2f2320]" for="target-base-model">Target Base Model</label>
+            <div class="relative">
+            <select
+              id="target-base-model"
+              name="target_base_model"
+              class="h-12 w-full appearance-none rounded-2xl border border-rose-200 bg-white/90 px-4 py-3 text-sm font-semibold text-[#2f2320] shadow-sm focus:border-[#ff6ea6] focus:outline-none focus:ring-2 focus:ring-[#ff8fb8]/40"
+            >
+              <option value="z-image">Z-Image</option>
+              <option value="flux-2-klein">Flux.2 Klein</option>
+              <option value="qwen-image">Qwen-Image</option>
+            </select>
+            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#ff8fb8]">▾</span>
+            </div>
+          </div>
+        </section>
+      </div>
+      <section class="mt-8 rounded-[28px] border border-rose-200 bg-white/75 p-6 shadow-[0_18px_40px_rgba(255,143,184,0.14)] sm:p-8">
+        <div class="mb-5 flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#7cc9ff] text-lg">🖼️</span>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#ff8fb8]">Source Image</p>
+          </div>
+        </div>
+        <label
+          id="caption-drop-zone"
+          for="caption-image"
+          class="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-rose-200 bg-white/90 px-6 py-10 text-center transition hover:border-rose-300 hover:bg-white"
+        >
+          <span class="text-base font-semibold text-[#2f2320]">Drop the image to caption here</span>
+          <span class="text-sm text-slate-600">PNG, JPG, or WEBP</span>
+          <input id="caption-image" name="image" type="file" accept="image/*" class="sr-only" />
+        </label>
+        <div class="mx-auto mt-4 max-w-sm overflow-hidden rounded-2xl border border-rose-200 bg-white/90">
+          <img
+            id="caption-preview"
+            alt="Selected image preview"
+            class="hidden h-36 w-full object-contain bg-[#fff6f2]"
+          />
+        </div>
+      </section>
+      <section class="mt-8 rounded-[28px] border border-rose-200 bg-white/80 p-6 shadow-[0_20px_45px_rgba(255,143,184,0.16)] sm:p-8">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#ff8fb8]">Caption to Prompt</p>
+          </div>
+          <div class="flex flex-col items-start gap-2">
+            <button
+              id="generate-caption-btn"
+              type="button"
+              class="inline-flex items-center justify-center rounded-2xl bg-[#ff8fb8] px-6 py-3 text-base font-semibold text-[#2f2320] shadow-sm transition hover:bg-[#ff6ea6]"
+            >
+              Generate
+            </button>
+            <label class="toggle">
+              <input id="allow-nsfw" type="checkbox" />
+              <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+              </span>
+              <span>Allow NSFW (Grok only)</span>
+            </label>
+            <p id="caption-status" class="text-xs font-medium text-slate-600"></p>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-rose-200 bg-white/90 p-4">
+          <div class="mb-3 text-sm font-semibold text-[#2f2320]">Prompt</div>
+          <textarea
+            id="prompt-output"
+            readonly
+            class="readout h-72 w-full resize-none rounded-xl border border-rose-200 bg-[#fff6f2] px-4 py-3 text-sm text-[#2f2320] shadow-inner"
+            placeholder="The model-tailored prompt will appear here."
+          ></textarea>
+        </div>
+      </section>
+    </main>
+    <script>
+      (() => {
+        const form = document.querySelector('form[action="/settings"]');
+        if (!form) {
+          return;
+        }
+        const serviceSelect = form.querySelector("#service-select");
+        const apiKeyInput = form.querySelector("#api-key");
+        const keyMap = {
+          gemini: form.dataset.geminiKey || "",
+          grok: form.dataset.grokKey || "",
+          openai: form.dataset.openaiKey || "",
+        };
+
+        const syncKey = () => {
+          if (!serviceSelect || !apiKeyInput) {
+            return;
+          }
+          const selected = (serviceSelect.value || "gemini").toLowerCase();
+          apiKeyInput.value = keyMap[selected] || "";
+        };
+
+        const saveSettings = async () => {
+          if (!serviceSelect || !apiKeyInput) {
+            return;
+          }
+          const payload = new FormData();
+          payload.append("service", serviceSelect.value);
+          payload.append("api_key", apiKeyInput.value);
+          try {
+            await fetch("/settings", {
+              method: "POST",
+              body: payload,
+            });
+          } catch (error) {
+            console.error("Failed to save settings:", error);
+          }
+        };
+
+        if (form) {
+          form.addEventListener("submit", (event) => {
+            event.preventDefault();
+          });
+        }
+        if (serviceSelect) {
+          serviceSelect.addEventListener("change", () => {
+            syncKey();
+            saveSettings();
+          });
+        }
+        if (apiKeyInput) {
+          apiKeyInput.addEventListener("change", saveSettings);
+          apiKeyInput.addEventListener("blur", saveSettings);
+        }
+        syncKey();
+      })();
+    </script>
+    <script>
+      (() => {
+        const button = document.getElementById("generate-caption-btn");
+        const fileInput = document.getElementById("caption-image");
+        const dropZone = document.getElementById("caption-drop-zone");
+        const preview = document.getElementById("caption-preview");
+        const targetSelect = document.getElementById("target-base-model");
+        const serviceSelect = document.getElementById("service-select");
+        const nsfwToggle = document.getElementById("allow-nsfw");
+        const promptOutput = document.getElementById("prompt-output");
+        const status = document.getElementById("caption-status");
+
+        if (!button || !fileInput || !targetSelect) {
+          return;
+        }
+
+        const setStatus = (message, tone = "text-slate-600") => {
+          if (!status) {
+            return;
+          }
+          status.className = `text-xs font-medium ${tone}`;
+          status.textContent = message;
+        };
+
+        const setPreview = (file) => {
+          if (!preview) {
+            return;
+          }
+          if (!file) {
+            preview.src = "";
+            preview.classList.add("hidden");
+            return;
+          }
+          preview.src = URL.createObjectURL(file);
+          preview.classList.remove("hidden");
+        };
+
+        if (fileInput) {
+          fileInput.addEventListener("change", () => {
+            const file = fileInput.files && fileInput.files[0];
+            setPreview(file || null);
+          });
+        }
+
+        if (dropZone && fileInput) {
+          ["dragenter", "dragover"].forEach((eventName) => {
+            dropZone.addEventListener(eventName, (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              dropZone.classList.add("border-rose-300", "bg-white");
+            });
+          });
+          ["dragleave", "drop"].forEach((eventName) => {
+            dropZone.addEventListener(eventName, (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              dropZone.classList.remove("border-rose-300", "bg-white");
+            });
+          });
+          dropZone.addEventListener("drop", (event) => {
+            const file = event.dataTransfer && event.dataTransfer.files[0];
+            if (!file) {
+              return;
+            }
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            fileInput.files = dataTransfer.files;
+            setPreview(file);
+          });
+        }
+
+        button.addEventListener("click", async () => {
+          if (!fileInput.files || fileInput.files.length === 0) {
+            setStatus("Upload an image first.", "text-rose-600");
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append("image", fileInput.files[0]);
+          formData.append("target_base_model", targetSelect.value);
+          if (serviceSelect) {
+            formData.append("service", serviceSelect.value);
+          }
+          if (nsfwToggle) {
+            formData.append("allow_nsfw", nsfwToggle.checked ? "true" : "false");
+          }
+
+          button.disabled = true;
+          button.classList.add("opacity-70", "cursor-not-allowed");
+          setStatus("Generating caption and prompt...");
+
+          try {
+            const response = await fetch("/caption-to-prompt", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (!response.ok) {
+              const detail = await response.json().catch(() => ({}));
+              throw new Error(detail.detail || "Generation failed.");
+            }
+
+            const payload = await response.json();
+            if (promptOutput) {
+              promptOutput.value = payload.prompt || "";
+            }
+            setStatus("Done! You can regenerate with a new image.");
+          } catch (error) {
+            setStatus(error.message || "Something went wrong.", "text-rose-600");
+          } finally {
+            button.disabled = false;
+            button.classList.remove("opacity-70", "cursor-not-allowed");
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

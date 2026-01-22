@@ -1,0 +1,52 @@
+{
+  "prompt_data": {
+    "subject": {
+      "description": "Beautiful young Japanese woman with fair skin and long, platinum blonde, slightly messy layered hair. Athletic full hourglass figure.",
+      "facial_features": "Defined eyebrows, almond-shaped dark eyes, winged eyeliner, rosy blushed cheeks, soft pink lips, direct and alluring eye contact.",
+      "expression": "Relaxed, slightly playful, lips parted slightly while sipping or holding a mug."
+    },
+    "apparel": {
+      "outfit": "Red latex bodysuit.",
+      "fit": "Skin-tight and glossy, highlighting body contours and the hourglass figure.",
+      "accessories": "Small silver hoop earring, simple pearl necklace, anklet on the left ankle."
+    },
+    "pose": {
+      "type": "Prone position (lying on stomach) on a bed.",
+      "upper_body": "Upper body propped up on elbows, facing the camera.",
+      "lower_body": "Lower back arched, hips and buttocks elevated and prominent in the frame, angled slightly away from the camera but fully visible. One leg bent at the knee with the foot raised in the air, displaying a bare sole.",
+      "hands": "Right hand holding a mug near the face, fingers with manicured nails visible."
+    },
+    "props": {
+      "main": "Red ceramic mug featuring a bold white Swiss cross (Switzerland flag symbol).",
+      "bedding": "Patterned bed sheets with a mix of plaid and floral designs in neutral and warm tones."
+    },
+    "environment": {
+      "setting": "Cozy, rustic interior bedroom.",
+      "background_elements": "Exposed beige brick wall, dark rustic wooden beams on the ceiling and walls, creating a cabin-like atmosphere.",
+      "atmosphere": "Warm, intimate, winter holiday vibe."
+    },
+    "lighting": {
+      "style": "Indoor ambient lighting mixed with a direct flash or ring light.",
+      "quality": "Soft glow on the face, slight specular highlights on the nose and mug, warm color temperature, creating a slightly nostalgic digital camera aesthetic."
+    },
+    "camera_settings": {
+      "camera": "Canon EOS R5 or high-end smartphone camera simulation.",
+      "lens": "35mm prime lens.",
+      "aperture": "f/2.8",
+      "shutter_speed": "1/60",
+      "iso": "400",
+      "focus": "Sharp focus on the subject's face and the mug, with a gentle depth of field softening the brick background."
+    },
+    "quality_tags": [
+      "Ultra Photorealistic",
+      "8k resolution",
+      "highly detailed skin texture",
+      "realistic fabric texture",
+      "volumetric lighting",
+      "influencer lifestyle photography",
+      "flash photography aesthetic",
+      "candid style"
+    ]
+  }
+}
+

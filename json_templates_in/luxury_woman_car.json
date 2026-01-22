@@ -1,0 +1,157 @@
+{
+  "scene": "luxury car interior, driver seat, looking back over shoulder",
+
+  "subject": {
+    "character": "PLATINUM BLONDE GIRL, early 20s, petite slim frame",
+    
+    "face": {
+      "structure": "soft delicate features, rounded cheeks, doll-like",
+      "skin": "porcelain pale with heavy pink-red blush on cheeks",
+      "eyes": {
+        "shape": "large round doe eyes",
+        "color": "light green-grey",
+        "expression": "looking back at camera, soft innocent gaze"
+      },
+      "mouth": {
+        "lips": "full, natural pink, slight pout"
+      },
+      "makeup": "natural base with intense pink blush, subtle eye makeup"
+    },
+    
+    "hair": {
+      "color": "PLATINUM BLONDE white-silver",
+      "length": "medium, past shoulders",
+      "texture": "straight with slight wave, soft",
+      "style": "middle part, loose and natural, tucked behind one ear",
+      "shine": "healthy soft shine"
+    }
+  },
+
+  "pose": {
+    "overall": "sitting in car driver seat, twisted to look back over shoulder",
+    
+    "position": {
+      "base": "seated in luxury car driver seat",
+      "orientation": "body facing forward, torso twisted back toward camera"
+    },
+    
+    "torso": {
+      "direction": "twisted to look behind",
+      "curve": "back slightly arched from twist",
+      "exposure": "small of back visible, midriff gap showing"
+    },
+    
+    "arms": {
+      "right": "resting on center console gear area",
+      "left": "resting on lap or console",
+      "hands": "near gear shift and phone"
+    },
+    
+    "legs": {
+      "position": "seated, crossed or together",
+      "visible": "thighs visible in short skirt"
+    },
+    
+    "head": {
+      "turn": "looking back OVER SHOULDER at camera",
+      "expression": "soft, slightly surprised, innocent"
+    }
+  },
+
+  "outfit": {
+    "top": {
+      "type": "black strapless tube top or corset top",
+      "fit": "tight, form fitting",
+      "neckline": "straight across strapless",
+      "length": "cropped, exposing lower back and midriff"
+    },
+    
+    "bottom": {
+      "type": "black and white gingham check mini skirt",
+      "pattern": "small gingham checkered pattern",
+      "colors": "black and white",
+      "length": "very short mini",
+      "fit": "fitted, riding up while seated"
+    },
+    
+    "legwear": {
+      "type": "sheer black tights or stockings",
+      "opacity": "semi-sheer, skin visible through"
+    }
+  },
+
+  "body": {
+    "type": "slim, petite, feminine",
+    "back": "lower back exposed in gap between top and skirt",
+    "skin": "pale porcelain, smooth"
+  },
+
+  "environment": {
+    "location": "inside luxury car, driver seat",
+    
+    "car_interior": {
+      "seats": "black leather sport seats with contrast stitching",
+      "style": "luxury sports car, possibly BMW or Mercedes",
+      "console": "modern center console with gear shift",
+      "steering": "sport steering wheel visible"
+    },
+    
+    "view_through_window": {
+      "background": "parking lot, other cars visible",
+      "trees": "green trees in background",
+      "lighting": "daytime, overcast"
+    }
+  },
+
+  "lighting": {
+    "type": "natural daylight through car windows",
+    
+    "quality": {
+      "intensity": "soft, diffused daylight",
+      "direction": "from windows, wrapping around subject"
+    },
+    
+    "on_subject": {
+      "skin": "soft glow, flattering",
+      "hair": "platinum catching light from window"
+    }
+  },
+
+  "photography": {
+    "angle": "from passenger side or back seat, capturing her looking back",
+    "framing": "upper body and thighs, seated in car",
+    "focus": "sharp on face and body",
+    "style": "candid car selfie aesthetic, instagram"
+  },
+
+  "color_palette": {
+    "subject": {
+      "hair": "PLATINUM white-silver blonde",
+      "skin": "porcelain with pink blush",
+      "top": "black",
+      "skirt": "black and white gingham",
+      "tights": "sheer black"
+    },
+    "environment": {
+      "interior": "black leather, dark tones",
+      "outside": "muted greens and greys"
+    }
+  },
+
+  "vibe": {
+    "energy": "casual luxury, effortless cool",
+    "mood": "soft, innocent but aware, candid moment",
+    "aesthetic": "it girl in nice car, boyfriend taking photo vibe"
+  },
+
+  "critical_requirements": {
+    "HAIR": "platinum blonde, medium length, soft and loose",
+    "FACE": "heavy pink blush on cheeks, innocent doe eyes, looking over shoulder",
+    "POSE": "seated in car, twisted to look back at camera",
+    "TOP": "black strapless tube top, back exposed",
+    "SKIRT": "black white gingham check mini skirt",
+    "TIGHTS": "sheer black stockings",
+    "SETTING": "luxury car interior, black leather seats",
+    "ANGLE": "shot from behind/side capturing her looking back"
+  }
+}

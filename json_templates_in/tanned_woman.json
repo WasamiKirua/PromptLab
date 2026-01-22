@@ -1,0 +1,111 @@
+{
+"subject": {
+"description": "Young woman with a tanned complexion and sun-kissed skin texture. She has long, wavy, dirty blonde hair with lighter highlights and darker roots, parted in the middle and falling over her shoulders. She is wearing a black, textured (crinkle fabric) bikini. The bikini top is a triangle style connected by a central gold O-ring and has thin straps with gold ring hardware at the shoulders. The bikini bottoms are matching textured black fabric with gold O-rings at the hips. She wears a thin gold chain necklace and has a silver belly button piercing. Her physique is fit and toned with a defined waistline.",
+"anatomical_fidelity": "The subject features a full, voluminous bust with significant mass and forward projection. Breast weight must be visually apparent, showing natural gravity and depth greater than the ribcage depth. Do not flatten, compress, or minimize chest volume. The torso is lean with visible abdominal definition. Skin texture shows natural pores, slight imperfections, and a shiny, high-specular finish indicative of sunscreen or natural oils.",
+"face": "Oval face shape, neutral to slightly serious expression, direct gaze looking straight at the viewer. Soft features with full lips and a straight nose. Natural makeup look with emphasis on glowing skin."
+},
+"pose": {
+"description": "Seated on a grey mesh lounge chair. The body is angled slightly to the viewer's left, while the head is turned to face forward directly. The torso leans back slightly, supported by the left arm which is extended back to grip the edge of the chair. The shoulders are relaxed but square. The legs are positioned with the right leg extended forward towards the bottom left of the frame and the left leg bent at the knee.",
+"orientation": "Three-quarter body angle, front-facing head.",
+"specifics": "Weight distributed on the buttocks and left hand. Natural spine curvature consistent with a seated, leaning-back posture."
+},
+"environment": {
+"location": "Outdoor residential patio area.",
+"elements": [
+"Grey mesh sun lounger/chaise lounge with a dark metal frame",
+"Grey interlocking paver stone patio floor",
+"White vinyl privacy fence in the background",
+"Green leafy bushes/shrubs situated between the chair and the fence"
+],
+"context": "Bright, sunny daytime setting in a backyard or pool area."
+},
+"camera": {
+"shot_type": "Medium shot (thighs up to top of head).",
+"angle": "Eye-level to slightly high angle, looking slightly down at the torso to emphasize depth.",
+"focal_length": "50mm to 85mm standard portrait lens.",
+"depth_of_field": "Sharp focus on the subject, slightly softer focus on the background fence.",
+"framing": "Centered composition with the subject dominating the frame."
+},
+"lighting": {
+"type": "Direct, hard natural sunlight.",
+"direction": "From the upper right (viewer's perspective), casting distinct shadows to the left.",
+"characteristics": "High contrast sunlight creating strong specular highlights on the forehead, shoulders, chest, and thighs. Shadows are sharp and dark, defining the muscle tone and facial structure.",
+"color_temperature": "Daylight balanced, approx 5500K."
+},
+"mood_and_expression": {
+"mood": "Relaxed, confident, summery, intense.",
+"expression": "Neutral, alluring, direct eye contact with a calm demeanor."
+},
+"style_and_realism": {
+"style": "Hyper-realistic photography, raw and unpolished.",
+"fidelity": "1:1 photorealism focusing on texture and physical accuracy.",
+"rendering": "Unreal Engine 5 level detail or high-end DSLR photography raw output."
+},
+"colors_and_tone": {
+"palette": "Natural skin tones (tan/bronze), matte black (bikini), vibrant green (foliage), bright white (fence), neutral grey (stone/chair).",
+"contrast": "High contrast due to direct sun.",
+"saturation": "Natural to slightly vibrant saturation."
+},
+"quality_and_technical_details": {
+"resolution": "8k",
+"texture_quality": "Ultra-high, emphasizing skin pores and fabric weave.",
+"noise": "Low ISO, clean image."
+},
+"aspect_ratio_and_output": {
+"ratio": "3:4",
+"cropping": "No cropping allowed that removes anatomical volume."
+},
+"controlnet": {
+"pose_control": {
+"model_type": "DWPose",
+"purpose": "Exact skeletal and pose lock",
+"constraints": [
+"preserve shoulder width",
+"preserve hip angle",
+"preserve spine curvature",
+"preserve limb placement"
+],
+"recommended_weight": 1.0
+},
+"depth_control": {
+"model_type": "ZoeDepth",
+"purpose": "Depth, volume, and camera-to-body spatial lock",
+"constraints": [
+"preserve chest foreground dominance",
+"prevent flat or compressed depth",
+"maintain clear torso-to-background separation"
+],
+"recommended_weight": 0.8
+}
+},
+"negative_prompt": {
+"forbidden_concepts": [
+"anatomy normalization",
+"body proportion averaging",
+"smaller bust than reference",
+"reduced chest volume",
+"flattened or compressed breasts",
+"tightened, lifted, or artificially supported breasts",
+"slimmed torso",
+"aesthetic proportion correction",
+"beauty standard enforcement",
+"dataset-average female anatomy",
+"camera angles that reduce volume",
+"wide-angle distortion not in reference",
+"lens compression not in reference",
+"cropping that removes volume",
+"depth flattening",
+"mirror selfies",
+"phone-in-hand selfies",
+"reflections",
+"beautification filters",
+"skin smoothing",
+"plastic skin",
+"airbrushed texture",
+"stylized realism",
+"editorial fashion proportions",
+"more realistic reinterpretation",
+"naturalization of prominent features"
+]
+}
+}

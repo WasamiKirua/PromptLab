@@ -1,0 +1,153 @@
+{
+  "meta": {
+    "aspect_ratio": "4:5",
+    "quality": "ultra_photorealistic",
+    "camera": "iPhone 15 Pro Max",
+    "lens": "24mm wide",
+    "style": "raw iPhone night flash photo, harsh flash realism, visible handheld imperfections"
+  },
+
+  "scene": {
+    "location": "private outdoor party at night",
+    "environment": [
+      "dark stone tiles fading into black",
+      "minimal garden silhouettes",
+      "two sun loungers placed close together"
+    ],
+    "time": "late night",
+    "atmosphere": "private, reckless, flash-lit intimacy"
+  },
+
+  "lighting": {
+    "type": "direct iPhone flash",
+    "source": "strong frontal flash",
+    "background": "nearly black",
+    "effect": [
+      "bright porcelain skin highlights",
+      "hard flash shadows behind bodies",
+      "high contrast nightlife look"
+    ]
+  },
+
+  "camera_perspective": {
+    "pov": "third person very close",
+    "angle": "slightly above chest level, pointing down",
+    "distance": "close",
+    "framing": "upper thighs to head, both subjects filling frame",
+    "stability": "slight tilt, imperfect framing"
+  },
+
+  "subjects": [
+    {
+      "role": "left girl",
+      "gender": "female",
+      "vibe": "young adult, dominant tease",
+      "ethnicity": "light-skinned european",
+
+      "body": {
+        "type": "extreme hourglass",
+        "chest": "very large, heavy, full breasts, deep natural cleavage under flash",
+        "waist": "very slim, sharp inward curve",
+        "hips": "wide and round",
+        "legs": "thick thighs"
+      },
+
+      "skin": {
+        "tone": "porcelain white",
+        "texture": "flawless, smooth",
+        "contrast": "bright against dark background"
+      },
+
+      "tattoos": {
+        "presence": "yes",
+        "location": [
+          "upper arm",
+          "side of ribcage"
+        ],
+        "style": "fine-line black tattoos, feminine and visible under flash"
+      },
+
+      "face": {
+        "expression": "intense thirsty gaze",
+        "eyes": "locked directly into camera",
+        "mouth": "slightly open lips",
+        "tongue": "tip of tongue subtly visible, teasing not exaggerated",
+        "vibe": "confident, hungry, controlled"
+      },
+
+      "hair": {
+        "color": "light blonde",
+        "style": "loose, slightly messy"
+      },
+
+      "pose": {
+        "position": "sitting forward on lounger",
+        "upper_body": "leaning slightly toward camera",
+        "arms": "hands resting behind or on lounger",
+        "chest_behavior": "breasts pressed together naturally by posture"
+      },
+
+      "outfit": {
+        "type": "black minimal bikini",
+        "fit": "tight, strained by curves"
+      }
+    },
+
+    {
+      "role": "right girl",
+      "gender": "female",
+      "vibe": "young adult, innocent-looking but thirsty",
+      "ethnicity": "light-skinned european",
+
+      "body": {
+        "type": "curvy-slim",
+        "chest": "full and round",
+        "waist": "slim",
+        "hips": "soft and wide",
+        "legs": "smooth thick thighs"
+      },
+
+      "skin": {
+        "tone": "porcelain white",
+        "texture": "perfect, unblemished"
+      },
+
+      "tattoos": {
+        "presence": "none"
+      },
+
+      "face": {
+        "expression": "soft but desperate gaze",
+        "eyes": "half-lidded, looking at camera",
+        "mouth": "open slightly",
+        "tongue": "resting gently on lower lip, subtle",
+        "vibe": "sweet but clearly thirsty"
+      },
+
+      "hair": {
+        "color": "soft blonde",
+        "style": "straight, falling over shoulders"
+      },
+
+      "pose": {
+        "position": "sitting very close to the other girl",
+        "upper_body": "angled slightly inward toward her",
+        "effect": "their shoulders nearly touching"
+      },
+
+      "outfit": {
+        "type": "black bikini",
+        "fit": "snug, minimal"
+      }
+    }
+  ],
+
+  "realism_constraints": [
+    "no pornographic actions",
+    "no exaggerated tongues",
+    "suggestive but Twitter-safe",
+    "realistic flash behavior",
+    "must look like a spontaneous late-night phone photo"
+  ]
+}
+

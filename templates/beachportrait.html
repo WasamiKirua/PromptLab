@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 120px; resize: vertical; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        .tab-nav { margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 10px; }
+        .tab-link { background-color: #f0cfe0; color: #6f5d59; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; }
+        .tab-link.active { background-color: #ff8fb8; color: #fff6f2; }
+        .tab-link:hover:not(.active) { background-color: #ffe1ee; color: #fff; }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>Beach Portrait</h1>
+            <form id="forge-form" action="/beachportrait" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/beach_portrait.png" alt="Template preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'meta-bp')">Meta</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-bp')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'environment-bp')">Environment</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'lighting-bp')">Lighting</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'realism-bp')">Realism</button>
+                </div>
+                <div id="meta-bp" class="tab-content active">
+                    <div class="form-group"><label for="aspect-bp">Aspect Ratio</label><input type="text" id="aspect-bp" name="meta.aspect_ratio" value="{{beach_portrait_data.meta.aspect_ratio}}"></div>
+                    <div class="form-group"><label for="quality-bp">Quality</label><textarea id="quality-bp" name="meta.quality">{{beach_portrait_data.meta.quality}}</textarea></div>
+                    <div class="form-group"><label for="resolution-bp">Resolution</label><textarea id="resolution-bp" name="meta.resolution">{{beach_portrait_data.meta.resolution}}</textarea></div>
+                    <div class="form-group"><label for="camera-bp">Camera</label><textarea id="camera-bp" name="meta.camera">{{beach_portrait_data.meta.camera}}</textarea></div>
+                    <div class="form-group"><label for="lens-bp">Lens</label><textarea id="lens-bp" name="meta.lens">{{beach_portrait_data.meta.lens}}</textarea></div>
+                    <div class="form-group"><label for="style-bp">Style</label><textarea id="style-bp" name="meta.style">{{beach_portrait_data.meta.style}}</textarea></div>
+                    <div class="form-group"><label for="composition-bp">Composition</label><textarea id="composition-bp" name="meta.composition">{{beach_portrait_data.meta.composition}}</textarea></div>
+                </div>
+                <div id="subject-bp" class="tab-content">
+                    <div class="form-group"><label for="identity-bp">Identity</label><textarea id="identity-bp" name="subject.identity">{{beach_portrait_data.subject.identity}}</textarea></div>
+                    <div class="form-group"><label for="expression-bp">Expression</label><textarea id="expression-bp" name="subject.face_details.expression">{{beach_portrait_data.subject.face_details.expression}}</textarea></div>
+                    <div class="form-group"><label for="skin-bp">Skin</label><textarea id="skin-bp" name="subject.face_details.skin">{{beach_portrait_data.subject.face_details.skin}}</textarea></div>
+                    <div class="form-group"><label for="eyes-bp">Eyes</label><textarea id="eyes-bp" name="subject.face_details.eyes">{{beach_portrait_data.subject.face_details.eyes}}</textarea></div>
+                    <div class="form-group"><label for="hair-style-bp">Hair Style</label><textarea id="hair-style-bp" name="subject.hair.style">{{beach_portrait_data.subject.hair.style}}</textarea></div>
+                    <div class="form-group"><label for="hair-color-bp">Hair Color</label><textarea id="hair-color-bp" name="subject.hair.color">{{beach_portrait_data.subject.hair.color}}</textarea></div>
+                    <div class="form-group"><label for="physique-bp">Physique</label><textarea id="physique-bp" name="subject.body.physique">{{beach_portrait_data.subject.body.physique}}</textarea></div>
+                    <div class="form-group"><label for="pose-bp">Pose</label><textarea id="pose-bp" name="subject.body.pose">{{beach_portrait_data.subject.body.pose}}</textarea></div>
+                    <div class="form-group"><label for="attire-bp">Attire</label><textarea id="attire-bp" name="subject.outfit.attire">{{beach_portrait_data.subject.outfit.attire}}</textarea></div>
+                </div>
+                <div id="environment-bp" class="tab-content">
+                    <div class="form-group"><label for="location-bp">Location</label><textarea id="location-bp" name="environment.location">{{beach_portrait_data.environment.location}}</textarea></div>
+                    <div class="form-group"><label for="foreground-bp">Foreground</label><textarea id="foreground-bp" name="environment.foreground">{{beach_portrait_data.environment.foreground}}</textarea></div>
+                    <div class="form-group"><label for="background-bp">Background</label><textarea id="background-bp" name="environment.background">{{beach_portrait_data.environment.background}}</textarea></div>
+                </div>
+                <div id="lighting-bp" class="tab-content">
+                    <div class="form-group"><label for="lighting-type-bp">Type</label><textarea id="lighting-type-bp" name="lighting.type">{{beach_portrait_data.lighting.type}}</textarea></div>
+                    <div class="form-group"><label for="lighting-quality-bp">Quality</label><textarea id="lighting-quality-bp" name="lighting.quality">{{beach_portrait_data.lighting.quality}}</textarea></div>
+                </div>
+                <div id="realism-bp" class="tab-content">
+                    <div class="form-group"><label for="textures-bp">Textures</label><textarea id="textures-bp" name="realism_focus.textures">{{beach_portrait_data.realism_focus.textures}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

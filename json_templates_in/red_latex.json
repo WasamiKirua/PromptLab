@@ -1,0 +1,69 @@
+
+{
+  "image_specification": {
+    "metadata": {
+      "aspect_ratio": "9:16",
+      "style_preset": "Cinematic Realism",
+      "quality_level": "Ultra-High Definition",
+      "render_engine": "Hyperrealistic Path-Tracing"
+    },
+    "subject_details": {
+      "identity": {
+        "ethnicity": "Japanese",
+        "aesthetic": "Platinum blonde, athletic hourglass beauty",
+        "reference_matching": "Maintain strict facial consistency with uploaded reference image"
+      },
+      "physical_traits": {
+        "skin": "Fair, porcelain complexion, visible micro-textures, subtle glow from saltwater and sun",
+        "hair": "Platinum blonde, straight, wind-swept, voluminous, silky texture",
+        "physique": "Athletic full hourglass figure, defined curves, toned"
+      },
+      "attire": {
+        "garment": "Red latex strappy bikini",
+        "details": "High-gloss latex sheen, intricate strap detailing, precise stitching textures",
+        "fit": "Form-fitting, summer lifestyle aesthetic"
+      },
+      "performance": {
+        "pose": "Leaning forward toward the camera, playful and engaging stance",
+        "expression": "Flirty smirk, confident gaze, direct eye contact",
+        "mood": "Energetic, alluring, warm"
+      }
+    },
+    "environment_and_setting": {
+      "location": "Tropical beach cabana",
+      "background_elements": [
+        "Weathered exotic wood textures",
+        "Soft-focus palm fronds",
+        "Distanced turquoise ocean horizon",
+        "White sand bokeh"
+      ],
+      "atmosphere": "Tropical warmth, hazy coastal air"
+    },
+    "lighting_and_color": {
+      "primary_source": "Golden hour sunlight",
+      "lighting_physics": "Warm rim lighting on hair and shoulders, soft diffused shadows, natural skin highlights",
+      "color_palette": "Teal and Orange contrast, warm ambers, vibrant turquoise"
+    },
+    "camera_technical_specs": {
+      "hardware": "85mm Prime Portrait Lens",
+      "settings": {
+        "aperture": "f/1.8 for creamy bokeh",
+        "depth_of_field": "Shallow depth of field, sharp focus on eyes, soft background blur",
+        "composition": "Close-up portrait, vertical orientation"
+      }
+    },
+    "constraints": {
+      "negative_prompt": [
+        "nudity",
+        "explicit content",
+        "childlike proportions",
+        "male features",
+        "anatomical distortion",
+        "extra limbs",
+        "low resolution",
+        "watermark",
+        "unrealistic skin smoothing"
+      ]
+    }
+  }
+}

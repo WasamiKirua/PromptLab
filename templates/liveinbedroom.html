@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 100px; resize: vertical; }
+        .image-drop-zone { border: 2px dashed #f0cfe0; border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: background-color 0.2s; min-height: 150px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .image-drop-zone:hover { background-color: #fff3f8; }
+        .image-drop-zone.dragover { background-color: #ffe3ef; border-color: #ff8fb8; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        #ref-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        /* Update these specific sections in your <style> tag */
+        .tab-nav {
+            margin-bottom: 1rem; /* Space between the row of buttons and the form */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Modern way to add spacing between buttons */
+        }
+        .tab-link {
+            background-color: #f0cfe0; /* Darker background for inactive tabs */
+            color: #6f5d59;
+            padding: 0.6rem 1.2rem; /* Vertical and Horizontal padding */
+            margin-right: 5px; /* Extra fallback spacing */
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+        }
+        .tab-link.active {
+            background-color: #ff8fb8;
+            color: #fff6f2;
+        }
+        .tab-link:hover:not(.active) {
+            background-color: #ffe1ee;
+            color: #fff;
+        }
+        input[readonly], textarea[readonly] {
+        background-color: #fff0f6; /* Slightly darker to indicate inactive */
+        color: #9b8a85; /* Dimmer text color */
+        cursor: not-allowed;
+        border-color: #fff3f8;
+    }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>Modern Live-In Bedroom</h1>
+            <form id="forge-form" action="/liveinbedroom" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/modern_live_bedroom.png" alt="Template preview">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'meta-2')">Meta</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'scene-2')">Scene</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'lighting-2')">Lighting</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'camera-2')">Camera</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-2')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'mood-2')">Mood</button>
+                </div>
+                <div id="meta-2" class="tab-content active">
+                    <div class="form-group"><label for="meta-aspect-ratio-2">Aspect Ratio</label><input type="text" id="meta-aspect-ratio-2" name="meta.aspect_ratio" value="{{livein_bedroom_data.meta.aspect_ratio}}"></div>
+                    <div class="form-group"><label for="meta-quality-2">Quality</label><input type="text" id="meta-quality-2" name="meta.quality" value="{{livein_bedroom_data.meta.quality}}"></div>
+                    <div class="form-group"><label for="meta-resolution-2">Resolution</label><input type="text" id="meta-resolution-2" name="meta.resolution" value="{{livein_bedroom_data.meta.resolution}}"></div>
+                    <div class="form-group"><label for="meta-camera-2">Camera</label><input type="text" id="meta-camera-2" name="meta.camera" value="{{livein_bedroom_data.meta.camera}}"></div>
+                    <div class="form-group"><label for="meta-lens-2">Lens</label><input type="text" id="meta-lens-2" name="meta.lens" value="{{livein_bedroom_data.meta.lens}}"></div>
+                    <div class="form-group"><label for="meta-style-2">Style</label><textarea id="meta-style-2" name="meta.style">{{livein_bedroom_data.meta.style}}</textarea></div>
+                </div>
+                <div id="scene-2" class="tab-content">
+                    <div class="form-group"><label for="scene-location-2">Location</label><input type="text" id="scene-location-2" name="scene.location" value="{{livein_bedroom_data.scene.location}}"></div>
+                    <div class="form-group"><label for="scene-environment-2">Environment</label><textarea id="scene-environment-2" name="scene.environment">{{livein_bedroom_data.scene.environment | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="scene-time-2">Time</label><input type="text" id="scene-time-2" name="scene.time" value="{{livein_bedroom_data.scene.time}}"></div>
+                    <div class="form-group"><label for="scene-atmosphere-2">Atmosphere</label><input type="text" id="scene-atmosphere-2" name="scene.atmosphere" value="{{livein_bedroom_data.scene.atmosphere}}"></div>
+                </div>
+                <div id="lighting-2" class="tab-content">
+                    <div class="form-group"><label for="lighting-type-2">Type</label><input type="text" id="lighting-type-2" name="lighting.type" value="{{livein_bedroom_data.lighting.type}}"></div>
+                    <div class="form-group"><label for="lighting-source-2">Source</label><input type="text" id="lighting-source-2" name="lighting.source" value="{{livein_bedroom_data.lighting.source}}"></div>
+                    <div class="form-group"><label for="lighting-effect-2">Effect</label><input type="text" id="lighting-effect-2" name="lighting.effect" value="{{livein_bedroom_data.lighting.effect}}"></div>
+                </div>
+                <div id="camera-2" class="tab-content">
+                    <div class="form-group"><label for="camera-pov-2">Pov</label><input type="text" id="camera-pov-2" name="camera_perspective.pov" value="{{livein_bedroom_data.camera_perspective.pov}}"></div>
+                    <div class="form-group"><label for="camera-angle-2">Angle</label><input type="text" id="camera-angle-2" name="camera_perspective.angle" value="{{livein_bedroom_data.camera_perspective.angle}}"></div>
+                    <div class="form-group"><label for="camera-framing-2">Framing</label><input type="text" id="camera-framing-2" name="camera_perspective.framing" value="{{livein_bedroom_data.camera_perspective.framing}}"></div>
+                    <div class="form-group"><label for="camera-distance-2">Distance</label><input type="text" id="camera-distance-2" name="camera_perspective.distance" value="{{livein_bedroom_data.camera_perspective.distance}}"></div>
+                    <div class="form-group"><label for="camera-imperfections-2">Imperfections</label><textarea id="camera-imperfections-2" name="camera_perspective.imperfections">{{livein_bedroom_data.camera_perspective.imperfections | join(', ')}}</textarea></div>
+                </div>
+                <div id="subject-2" class="tab-content">
+                    <div class="form-group"><label for="subject-gender-2">Gender</label><input type="text" id="subject-gender-2" name="subject.gender" value="{{livein_bedroom_data.subject.gender}}"></div>
+                    <div class="form-group"><label for="subject-ethnicity-2">Ethnicity</label><input type="text" id="subject-ethnicity-2" name="subject.ethnicity" value="{{livein_bedroom_data.subject.ethnicity}}"></div>
+                    <div class="form-group"><label for="subject-vibe-2">Vibe</label><input type="text" id="subject-vibe-2" name="subject.vibe" value="{{livein_bedroom_data.subject.vibe}}"></div>
+                    <div class="form-group"><label for="subject-body-type-2">Body Type</label><input type="text" id="subject-body-type-2" name="subject.body.type" value="{{livein_bedroom_data.subject.body.type}}"></div>
+                    <div class="form-group"><label for="subject-body-waist-2">Body Waist</label><input type="text" id="subject-body-waist-2" name="subject.body.waist" value="{{livein_bedroom_data.subject.body.waist}}"></div>
+                    <div class="form-group"><label for="subject-body-hips-2">Body Hips</label><input type="text" id="subject-body-hips-2" name="subject.body.hips" value="{{livein_bedroom_data.subject.body.hips}}"></div>
+                    <div class="form-group"><label for="subject-body-glutes-2">Body Glutes</label><input type="text" id="subject-body-glutes-2" name="subject.body.glutes" value="{{livein_bedroom_data.subject.body.glutes}}"></div>
+                    <div class="form-group"><label for="subject-body-legs-2">Body Legs</label><input type="text" id="subject-body-legs-2" name="subject.body.legs" value="{{livein_bedroom_data.subject.body.legs}}"></div>
+                    <div class="form-group"><label for="subject-body-chest-2">Body Chest</label><input type="text" id="subject-body-chest-2" name="subject.body.chest" value="{{livein_bedroom_data.subject.body.chest}}"></div>
+                    <div class="form-group"><label for="subject-skin-tone-2">Skin Tone</label><input type="text" id="subject-skin-tone-2" name="subject.skin.tone" value="{{livein_bedroom_data.subject.skin.tone}}"></div>
+                    <div class="form-group"><label for="subject-skin-texture-2">Skin Texture</label><input type="text" id="subject-skin-texture-2" name="subject.skin.texture" value="{{livein_bedroom_data.subject.skin.texture}}"></div>
+                    <div class="form-group"><label for="subject-hair-color-2">Hair Color</label><input type="text" id="subject-hair-color-2" name="subject.hair.color" value="{{livein_bedroom_data.subject.hair.color}}"></div>
+                    <div class="form-group"><label for="subject-hair-style-2">Hair Style</label><input type="text" id="subject-hair-style-2" name="subject.hair.style" value="{{livein_bedroom_data.subject.hair.style}}"></div>
+                    <div class="form-group"><label for="subject-hair-details-2">Hair Details</label><input type="text" id="subject-hair-details-2" name="subject.hair.details" value="{{livein_bedroom_data.subject.hair.details}}"></div>
+                    <div class="form-group"><label for="subject-face-expression-2">Face Expression</label><input type="text" id="subject-face-expression-2" name="subject.face.expression" value="{{livein_bedroom_data.subject.face.expression}}"></div>
+                    <div class="form-group"><label for="subject-face-eyes-2">Face Eyes</label><input type="text" id="subject-face-eyes-2" name="subject.face.eyes" value="{{livein_bedroom_data.subject.face.eyes}}"></div>
+                    <div class="form-group"><label for="subject-face-makeup-2">Face Makeup</label><input type="text" id="subject-face-makeup-2" name="subject.face.makeup" value="{{livein_bedroom_data.subject.face.makeup}}"></div>
+                    <div class="form-group"><label for="subject-outfit-type-2">Outfit Type</label><input type="text" id="subject-outfit-type-2" name="subject.outfit.type" value="{{livein_bedroom_data.subject.outfit.type}}"></div>
+                    <div class="form-group"><label for="subject-outfit-material-2">Outfit Material</label><input type="text" id="subject-outfit-material-2" name="subject.outfit.material" value="{{livein_bedroom_data.subject.outfit.material}}"></div>
+                    <div class="form-group"><label for="subject-outfit-color-2">Outfit Color</label><input type="text" id="subject-outfit-color-2" name="subject.outfit.color" value="{{livein_bedroom_data.subject.outfit.color}}"></div>
+                    <div class="form-group"><label for="subject-outfit-pattern-2">Outfit Pattern</label><input type="text" id="subject-outfit-pattern-2" name="subject.outfit.pattern" value="{{livein_bedroom_data.subject.outfit.pattern}}"></div>
+                    <div class="form-group"><label for="subject-outfit-fit-2">Outfit Fit</label><input type="text" id="subject-outfit-fit-2" name="subject.outfit.fit" value="{{livein_bedroom_data.subject.outfit.fit}}"></div>
+                    <div class="form-group"><label for="subject-outfit-details-2">Outfit Details</label><textarea id="subject-outfit-details-2" name="subject.outfit.details">{{livein_bedroom_data.subject.outfit.details | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="subject-pose-position-2">Pose Position</label><input type="text" id="subject-pose-position-2" name="subject.pose.position" value="{{livein_bedroom_data.subject.pose.position}}"></div>
+                    <div class="form-group"><label for="subject-pose-support-2">Pose Support</label><input type="text" id="subject-pose-support-2" name="subject.pose.support" value="{{livein_bedroom_data.subject.pose.support}}"></div>
+                    <div class="form-group"><label for="subject-pose-hips-2">Pose Hips</label><input type="text" id="subject-pose-hips-2" name="subject.pose.hips" value="{{livein_bedroom_data.subject.pose.hips}}"></div>
+                    <div class="form-group"><label for="subject-pose-upper-2">Pose Upper Body</label><input type="text" id="subject-pose-upper-2" name="subject.pose.upper_body" value="{{livein_bedroom_data.subject.pose.upper_body}}"></div>
+                    <div class="form-group"><label for="subject-pose-hand-2">Pose Free Hand</label><input type="text" id="subject-pose-hand-2" name="subject.pose.free_hand" value="{{livein_bedroom_data.subject.pose.free_hand}}"></div>
+                    <div class="form-group"><label for="subject-pose-movement-2">Pose Movement</label><input type="text" id="subject-pose-movement-2" name="subject.pose.movement" value="{{livein_bedroom_data.subject.pose.movement}}"></div>
+                </div>
+                <div id="mood-2" class="tab-content">
+                    <div class="form-group"><label for="mood-keywords-2">Mood Keywords</label><textarea id="mood-keywords-2" name="mood_keywords">{{livein_bedroom_data.mood_keywords | join(', ')}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

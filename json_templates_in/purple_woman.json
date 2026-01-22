@@ -1,0 +1,17 @@
+{
+  "prompt_type": "photorealistic candid paparazzi portrait",
+  "main_composition": "medium close-up three-quarter view of a single young woman seated in the back seat of a luxury car at night, legs crossed with one hand holding a small black clutch purse on her lap and the other resting on her thigh, subtle relaxed expression looking slightly in camera, dim interior car lighting with soft glow highlighting skin and dress fabric, intimate private moment captured through open door or window",
+  "subject": {
+    "description": "beautiful young woman in her late 20s or early 30s, attractive feminine features with minimal or natural evening makeup (subtle contour, neutral lips), shoulder-length straight dark brown hair with full blunt bangs framing face and soft side part, fair smooth skin with natural glow, elegant poised physique",
+    "clothing": "luxurious ultra short purple velvet or satin halter-neck evening gown with extreme deep plunging V-neckline to mid-torso, thin straps adorned with sparkling crystal or rhinestone embellishments on shoulders, fitted bodice with  miniskirt (partially visible), no additional outerwear",
+    "details": "small black textured clutch purse (possibly crocodile or quilted pattern) held in lap, multiple silver rings on fingers including statement piece on right hand, relaxed seated pose with slight forward lean and crossed legs, hair neatly styled with natural volume"
+  },
+  "environment": {
+    "foreground": "dark leather car seat and interior door panel, subtle reflections on surfaces",
+    "midground": "woman centered in back seat",
+    "background": "dim luxury car interior with black leather upholstery and headrest visible, dark exterior night setting implied through low light, no additional passengers or details"
+  },
+  "lighting_and_atmosphere": "dim low interior car lighting (likely from exterior streetlights or dashboard glow filtering in), soft directional highlights on face, shoulders, skin, and satin fabric creating luxurious sheen, deep shadows in background enhancing intimate moody atmosphere, subtle warm tones on skin contrasting cool dark interior, candid glamorous night-out vibe with high contrast photorealistic detail",
+  "technical_quality": "highly detailed, sharp focus on face, crystal strap embellishments, velvet texture, and skin details, 8k resolution, realistic fabric folds and subtle reflections on purse/clutch, professional paparazzi or candid photography style with natural low-light grain and slight motion softness",
+  "negative_prompt_suggestions": "blurry, deformed, extra limbs, harsh flash artifacts, overexposed skin, underexposed interior, low quality, cartoon, anime, text watermark, extra people, bright daylight, visible camera flash reflection"
+}

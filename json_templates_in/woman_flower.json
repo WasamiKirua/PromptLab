@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "aspect_ratio": "3:4",
+    "quality": "ultra_photorealistic, raw, unedited photograph",
+    "resolution": "8k",
+    "camera": "Mirrorless camera (e.g., Canon EOS R5)",
+    "lens": "50mm f/1.2 portrait lens",
+    "style": "Soft natural light portrait, vibrant colors, relaxed atmosphere",
+    "composition": "Medium shot of a woman reclining on an outdoor wooden sofa, looking directly at the camera with a smile."
+  },
+  "scene": {
+    "location": "Outdoor garden patio or lounge area",
+    "environment": [
+      "Wooden/rattan outdoor sofa with textured yellow cushions",
+      "Lush green foliage and trees in the background",
+      "Softly blurred garden setting"
+    ],
+    "time": "Daytime, soft diffused sunlight",
+    "atmosphere": "Relaxed, tropical, cheerful, cozy"
+  },
+  "lighting": {
+    "type": "Soft, diffused natural daylight",
+    "source": "Natural light (possibly shaded)",
+    "effect": "Even lighting on the face and body, soft shadows, warm tones emphasizing the skin and the yellow accents."
+  },
+  "subject": {
+    "identity": "A woman with long platinum blonde hair, smiling warmly at the camera.",
+    "body": {
+      "pose": "Reclining back against yellow cushions. Her right hand is raised touching a flower behind her ear, her left hand is resting on her thigh/bikini bottom.",
+      "physique": "Fit, curvy build with fair to lightly tanned skin."
+    },
+    "outfit": {
+      "clothing": "White strapless (bandeau) bikini with a pattern of yellow bananas. High-cut string bikini bottom.",
+      "accessories": "A white and yellow Plumeria (Frangipani) flower tucked behind her right ear. A thin gold bracelet on her right wrist."
+    }
+  },
+  "realism_focus": {
+    "textures": "Fabric texture of the banana print bikini, texture of the yellow sofa cushions, realistic skin texture, details of the flower petals, strands of blonde hair.",
+    "imperfections": "Natural skin folds from the sitting pose, realistic lighting reflections in eyes, natural smile lines."
+  }
+}

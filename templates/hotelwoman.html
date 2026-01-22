@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 120px; resize: vertical; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        .tab-nav { margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 10px; }
+        .tab-link { background-color: #f0cfe0; color: #6f5d59; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; }
+        .tab-link.active { background-color: #ff8fb8; color: #fff6f2; }
+        .tab-link:hover:not(.active) { background-color: #ffe1ee; color: #fff; }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>Hotel Woman</h1>
+            <form id="forge-form" action="/hotelwoman" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/hotel_woman.png" alt="Template preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'meta-hw')">Meta</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'scene-hw')">Scene</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'lighting-hw')">Lighting</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-hw')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'outfit-hw')">Outfit</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'pose-hw')">Pose</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'camera-hw')">Camera</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'negative-hw')">Negative</button>
+                </div>
+                <div id="meta-hw" class="tab-content active">
+                    <div class="form-group"><label for="aspect-hw">Aspect Ratio</label><input type="text" id="aspect-hw" name="image_prompt.meta.aspect_ratio" value="{{hotel_woman_data.image_prompt.meta.aspect_ratio}}"></div>
+                    <div class="form-group"><label for="camera-hw-meta">Camera</label><textarea id="camera-hw-meta" name="image_prompt.meta.camera">{{hotel_woman_data.image_prompt.meta.camera}}</textarea></div>
+                    <div class="form-group"><label for="lens-hw">Lens Feel</label><textarea id="lens-hw" name="image_prompt.meta.lens_feel">{{hotel_woman_data.image_prompt.meta.lens_feel}}</textarea></div>
+                    <div class="form-group"><label for="quality-hw">Quality</label><textarea id="quality-hw" name="image_prompt.meta.quality">{{hotel_woman_data.image_prompt.meta.quality}}</textarea></div>
+                    <div class="form-group"><label for="texture-rules-hw">Texture Rules</label><textarea id="texture-rules-hw" name="image_prompt.meta.texture_rules">{{hotel_woman_data.image_prompt.meta.texture_rules | join(', ')}}</textarea></div>
+                </div>
+                <div id="scene-hw" class="tab-content">
+                    <div class="form-group"><label for="location-hw">Location</label><textarea id="location-hw" name="image_prompt.scene.location">{{hotel_woman_data.image_prompt.scene.location}}</textarea></div>
+                    <div class="form-group"><label for="background-hw">Key Background Elements</label><textarea id="background-hw" name="image_prompt.scene.key_background_elements">{{hotel_woman_data.image_prompt.scene.key_background_elements | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="foreground-hw">Foreground</label><textarea id="foreground-hw" name="image_prompt.scene.foreground">{{hotel_woman_data.image_prompt.scene.foreground | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="extras-hw">Extra Realism Details</label><textarea id="extras-hw" name="image_prompt.scene.extra_realism_details">{{hotel_woman_data.image_prompt.scene.extra_realism_details | join(', ')}}</textarea></div>
+                </div>
+                <div id="lighting-hw" class="tab-content">
+                    <div class="form-group"><label for="lighting-type-hw">Type</label><textarea id="lighting-type-hw" name="image_prompt.lighting.type">{{hotel_woman_data.image_prompt.lighting.type}}</textarea></div>
+                    <div class="form-group"><label for="lighting-sources-hw">Sources</label><textarea id="lighting-sources-hw" name="image_prompt.lighting.sources">{{hotel_woman_data.image_prompt.lighting.sources | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="lighting-look-hw">Look</label><textarea id="lighting-look-hw" name="image_prompt.lighting.look">{{hotel_woman_data.image_prompt.lighting.look | join(', ')}}</textarea></div>
+                </div>
+                <div id="subject-hw" class="tab-content">
+                    <div class="form-group"><label for="person-hw">Person</label><textarea id="person-hw" name="image_prompt.subject.person">{{hotel_woman_data.image_prompt.subject.person}}</textarea></div>
+                    <div class="form-group"><label for="ethnicity-hw">Ethnicity</label><textarea id="ethnicity-hw" name="image_prompt.subject.ethnicity">{{hotel_woman_data.image_prompt.subject.ethnicity}}</textarea></div>
+                    <div class="form-group"><label for="skin-tone-hw">Skin Tone</label><textarea id="skin-tone-hw" name="image_prompt.subject.skin.tone">{{hotel_woman_data.image_prompt.subject.skin.tone}}</textarea></div>
+                    <div class="form-group"><label for="skin-finish-hw">Skin Finish</label><textarea id="skin-finish-hw" name="image_prompt.subject.skin.finish">{{hotel_woman_data.image_prompt.subject.skin.finish}}</textarea></div>
+                    <div class="form-group"><label for="face-structure-hw">Face Structure</label><textarea id="face-structure-hw" name="image_prompt.subject.face.structure">{{hotel_woman_data.image_prompt.subject.face.structure}}</textarea></div>
+                    <div class="form-group"><label for="face-expression-hw">Face Expression</label><textarea id="face-expression-hw" name="image_prompt.subject.face.expression">{{hotel_woman_data.image_prompt.subject.face.expression}}</textarea></div>
+                    <div class="form-group"><label for="face-makeup-hw">Face Makeup</label><textarea id="face-makeup-hw" name="image_prompt.subject.face.makeup">{{hotel_woman_data.image_prompt.subject.face.makeup}}</textarea></div>
+                    <div class="form-group"><label for="hair-color-hw">Hair Color</label><textarea id="hair-color-hw" name="image_prompt.subject.hair.color">{{hotel_woman_data.image_prompt.subject.hair.color}}</textarea></div>
+                    <div class="form-group"><label for="hair-length-hw">Hair Length</label><textarea id="hair-length-hw" name="image_prompt.subject.hair.length">{{hotel_woman_data.image_prompt.subject.hair.length}}</textarea></div>
+                    <div class="form-group"><label for="hair-style-hw">Hair Style</label><textarea id="hair-style-hw" name="image_prompt.subject.hair.style">{{hotel_woman_data.image_prompt.subject.hair.style}}</textarea></div>
+                    <div class="form-group"><label for="body-type-hw">Body Type</label><textarea id="body-type-hw" name="image_prompt.subject.body.type">{{hotel_woman_data.image_prompt.subject.body.type}}</textarea></div>
+                    <div class="form-group"><label for="body-waist-hw">Body Waist</label><textarea id="body-waist-hw" name="image_prompt.subject.body.waist">{{hotel_woman_data.image_prompt.subject.body.waist}}</textarea></div>
+                    <div class="form-group"><label for="body-legs-hw">Body Legs</label><textarea id="body-legs-hw" name="image_prompt.subject.body.legs">{{hotel_woman_data.image_prompt.subject.body.legs}}</textarea></div>
+                    <div class="form-group"><label for="body-chest-hw">Body Chest</label><textarea id="body-chest-hw" name="image_prompt.subject.body.chest">{{hotel_woman_data.image_prompt.subject.body.chest}}</textarea></div>
+                    <div class="form-group"><label for="armpits-hw">Armpits</label><textarea id="armpits-hw" name="image_prompt.subject.grooming_details.armpits">{{hotel_woman_data.image_prompt.subject.grooming_details.armpits}}</textarea></div>
+                    <div class="form-group"><label for="fingernails-hw">Fingernails</label><textarea id="fingernails-hw" name="image_prompt.subject.grooming_details.fingernails">{{hotel_woman_data.image_prompt.subject.grooming_details.fingernails}}</textarea></div>
+                    <div class="form-group"><label for="toenails-hw">Toenails</label><textarea id="toenails-hw" name="image_prompt.subject.grooming_details.toenails">{{hotel_woman_data.image_prompt.subject.grooming_details.toenails}}</textarea></div>
+                    <div class="form-group"><label for="accessory-hw">Accessory</label><textarea id="accessory-hw" name="image_prompt.subject.grooming_details.accessory">{{hotel_woman_data.image_prompt.subject.grooming_details.accessory}}</textarea></div>
+                </div>
+                <div id="outfit-hw" class="tab-content">
+                    <div class="form-group"><label for="top-type-hw">Top Type</label><textarea id="top-type-hw" name="image_prompt.outfit.top.type">{{hotel_woman_data.image_prompt.outfit.top.type}}</textarea></div>
+                    <div class="form-group"><label for="top-color-hw">Top Color</label><textarea id="top-color-hw" name="image_prompt.outfit.top.color">{{hotel_woman_data.image_prompt.outfit.top.color}}</textarea></div>
+                    <div class="form-group"><label for="top-material-hw">Top Material</label><textarea id="top-material-hw" name="image_prompt.outfit.top.material">{{hotel_woman_data.image_prompt.outfit.top.material}}</textarea></div>
+                    <div class="form-group"><label for="top-fit-hw">Top Fit Rules</label><textarea id="top-fit-hw" name="image_prompt.outfit.top.fit_rules">{{hotel_woman_data.image_prompt.outfit.top.fit_rules | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="bottom-type-hw">Bottom Type</label><textarea id="bottom-type-hw" name="image_prompt.outfit.bottom.type">{{hotel_woman_data.image_prompt.outfit.bottom.type}}</textarea></div>
+                    <div class="form-group"><label for="bottom-fit-hw">Bottom Fit</label><textarea id="bottom-fit-hw" name="image_prompt.outfit.bottom.fit">{{hotel_woman_data.image_prompt.outfit.bottom.fit}}</textarea></div>
+                    <div class="form-group"><label for="feet-hw">Feet</label><textarea id="feet-hw" name="image_prompt.outfit.feet">{{hotel_woman_data.image_prompt.outfit.feet}}</textarea></div>
+                </div>
+                <div id="pose-hw" class="tab-content">
+                    <div class="form-group"><label for="pose-exact-hw">Exact Pose Match</label><textarea id="pose-exact-hw" name="image_prompt.pose.exact_pose_match">{{hotel_woman_data.image_prompt.pose.exact_pose_match | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="pose-micro-hw">Micro Motion</label><textarea id="pose-micro-hw" name="image_prompt.pose.micro_motion">{{hotel_woman_data.image_prompt.pose.micro_motion | join(', ')}}</textarea></div>
+                </div>
+                <div id="camera-hw" class="tab-content">
+                    <div class="form-group"><label for="framing-hw">Framing</label><textarea id="framing-hw" name="image_prompt.camera_composition.framing">{{hotel_woman_data.image_prompt.camera_composition.framing}}</textarea></div>
+                    <div class="form-group"><label for="angle-hw">Angle</label><textarea id="angle-hw" name="image_prompt.camera_composition.angle">{{hotel_woman_data.image_prompt.camera_composition.angle}}</textarea></div>
+                    <div class="form-group"><label for="distance-hw">Distance</label><textarea id="distance-hw" name="image_prompt.camera_composition.distance">{{hotel_woman_data.image_prompt.camera_composition.distance}}</textarea></div>
+                    <div class="form-group"><label for="focus-hw">Focus</label><textarea id="focus-hw" name="image_prompt.camera_composition.focus">{{hotel_woman_data.image_prompt.camera_composition.focus}}</textarea></div>
+                    <div class="form-group"><label for="realism-hw">Realism Notes</label><textarea id="realism-hw" name="image_prompt.camera_composition.realism_notes">{{hotel_woman_data.image_prompt.camera_composition.realism_notes | join(', ')}}</textarea></div>
+                </div>
+                <div id="negative-hw" class="tab-content">
+                    <div class="form-group"><label for="negative-hw">Negative Prompt</label><textarea id="negative-hw" name="image_prompt.negative_prompt">{{hotel_woman_data.image_prompt.negative_prompt | join(', ')}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

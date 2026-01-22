@@ -1,0 +1,16 @@
+
+{
+  "prompt": "Mirror selfie in a soft aesthetic bedroom. A young woman sitting on a beige carpet floor, full body visible. She wears a fitted black long-sleeve mini dress, white thigh-high ribbed socks, and white sneakers. Blonde hair with soft bangs, slightly wavy and shoulder length. Neutral, slightly sad expression, looking at her phone screen while taking the selfie. iPhone with triple camera visible in the mirror. Cozy bedroom background with a black dresser, minimal decor, clean white wall, and soft indoor lighting. Natural skin tones, realistic body proportions. Casual yet stylish pose with legs folded to the side. High realism, sharp focus, lifestyle photography, Instagram aesthetic, candid mirror shot.",
+  "negative_prompt": "low quality, blurry, overexposed, underexposed, distorted face, extra fingers, extra limbs, bad anatomy, cropped body, watermark, text, logo, heavy makeup, cartoon, anime, painting",
+  "style": "photorealistic",
+  "camera": {
+    "type": "smartphone",
+    "model": "iPhone",
+    "lens": "wide",
+    "angle": "mirror selfie"
+  },
+  "lighting": "soft indoor ambient lighting",
+  "quality": "high",
+  "aspect_ratio": "4:5",
+  "seed": "random"
+}

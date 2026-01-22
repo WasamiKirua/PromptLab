@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 100px; resize: vertical; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        .tab-nav {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tab-link {
+            background-color: #f0cfe0;
+            color: #6f5d59;
+            padding: 0.6rem 1.2rem;
+            margin-right: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+        }
+        .tab-link.active {
+            background-color: #ff8fb8;
+            color: #fff6f2;
+        }
+        .tab-link:hover:not(.active) {
+            background-color: #ffe1ee;
+            color: #fff;
+        }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>Small Bedroom</h1>
+            <form id="forge-form" action="/smallbedroom" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/small_bedroom.png" alt="Template preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'meta-sb')">Meta</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'scene-sb')">Scene</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'lighting-sb')">Lighting</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'camera-sb')">Camera</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-sb')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'rules-sb')">Rules</button>
+                </div>
+                <div id="meta-sb" class="tab-content active">
+                    <div class="form-group"><label for="meta-aspect-sb">Aspect Ratio</label><input type="text" id="meta-aspect-sb" name="meta.aspect_ratio" value="{{small_bedroom_data.meta.aspect_ratio}}"></div>
+                    <div class="form-group"><label for="meta-device-sb">Device</label><input type="text" id="meta-device-sb" name="meta.device" value="{{small_bedroom_data.meta.device}}"></div>
+                    <div class="form-group"><label for="meta-camera-sb">Camera</label><input type="text" id="meta-camera-sb" name="meta.camera" value="{{small_bedroom_data.meta.camera}}"></div>
+                    <div class="form-group"><label for="meta-lens-sb">Lens</label><input type="text" id="meta-lens-sb" name="meta.lens" value="{{small_bedroom_data.meta.lens}}"></div>
+                    <div class="form-group"><label for="meta-style-sb">Photo Style</label><input type="text" id="meta-style-sb" name="meta.photo_style" value="{{small_bedroom_data.meta.photo_style}}"></div>
+                    <div class="form-group"><label for="meta-quality-sb">Quality</label><input type="text" id="meta-quality-sb" name="meta.quality" value="{{small_bedroom_data.meta.quality}}"></div>
+                    <div class="form-group"><label for="meta-resolution-sb">Resolution</label><input type="text" id="meta-resolution-sb" name="meta.resolution" value="{{small_bedroom_data.meta.resolution}}"></div>
+                    <div class="form-group"><label for="meta-compression-sb">Compression</label><input type="text" id="meta-compression-sb" name="meta.compression" value="{{small_bedroom_data.meta.compression}}"></div>
+                    <div class="form-group"><label for="meta-details-sb">Details</label><input type="text" id="meta-details-sb" name="meta.details" value="{{small_bedroom_data.meta.details}}"></div>
+                </div>
+                <div id="scene-sb" class="tab-content">
+                    <div class="form-group"><label for="scene-location-sb">Location</label><input type="text" id="scene-location-sb" name="scene.location" value="{{small_bedroom_data.scene.location}}"></div>
+                    <div class="form-group"><label for="scene-environment-sb">Environment</label><textarea id="scene-environment-sb" name="scene.environment">{{small_bedroom_data.scene.environment | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="scene-time-sb">Time</label><input type="text" id="scene-time-sb" name="scene.time" value="{{small_bedroom_data.scene.time}}"></div>
+                    <div class="form-group"><label for="scene-atmosphere-sb">Atmosphere</label><input type="text" id="scene-atmosphere-sb" name="scene.atmosphere" value="{{small_bedroom_data.scene.atmosphere}}"></div>
+                </div>
+                <div id="lighting-sb" class="tab-content">
+                    <div class="form-group"><label for="lighting-type-sb">Type</label><input type="text" id="lighting-type-sb" name="lighting.type" value="{{small_bedroom_data.lighting.type}}"></div>
+                    <div class="form-group"><label for="lighting-color-sb">Color</label><input type="text" id="lighting-color-sb" name="lighting.color" value="{{small_bedroom_data.lighting.color}}"></div>
+                    <div class="form-group"><label for="lighting-behavior-sb">Behavior</label><textarea id="lighting-behavior-sb" name="lighting.behavior">{{small_bedroom_data.lighting.behavior | join(', ')}}</textarea></div>
+                </div>
+                <div id="camera-sb" class="tab-content">
+                    <div class="form-group"><label for="camera-shot-sb">Shot Type</label><input type="text" id="camera-shot-sb" name="camera_behavior.shot_type" value="{{small_bedroom_data.camera_behavior.shot_type}}"></div>
+                    <div class="form-group"><label for="camera-angle-sb">Angle</label><input type="text" id="camera-angle-sb" name="camera_behavior.angle" value="{{small_bedroom_data.camera_behavior.angle}}"></div>
+                    <div class="form-group"><label for="camera-framing-sb">Framing</label><input type="text" id="camera-framing-sb" name="camera_behavior.framing" value="{{small_bedroom_data.camera_behavior.framing}}"></div>
+                    <div class="form-group"><label for="camera-focus-sb">Focus</label><input type="text" id="camera-focus-sb" name="camera_behavior.focus" value="{{small_bedroom_data.camera_behavior.focus}}"></div>
+                    <div class="form-group"><label for="camera-vibe-sb">Vibe</label><input type="text" id="camera-vibe-sb" name="camera_behavior.vibe" value="{{small_bedroom_data.camera_behavior.vibe}}"></div>
+                </div>
+                <div id="subject-sb" class="tab-content">
+                    <div class="form-group"><label for="subject-gender-sb">Gender</label><input type="text" id="subject-gender-sb" name="subject.gender" value="{{small_bedroom_data.subject.gender}}"></div>
+                    <div class="form-group"><label for="subject-age-sb">Age</label><input type="text" id="subject-age-sb" name="subject.age" value="{{small_bedroom_data.subject.age}}"></div>
+                    <div class="form-group"><label for="subject-ethnicity-sb">Ethnicity</label><input type="text" id="subject-ethnicity-sb" name="subject.ethnicity" value="{{small_bedroom_data.subject.ethnicity}}"></div>
+                    <div class="form-group"><label for="subject-aesthetic-sb">Aesthetic</label><input type="text" id="subject-aesthetic-sb" name="subject.aesthetic" value="{{small_bedroom_data.subject.aesthetic}}"></div>
+                    <div class="form-group"><label for="hair-style-sb">Hair Style</label><input type="text" id="hair-style-sb" name="subject.hair.style" value="{{small_bedroom_data.subject.hair.style}}"></div>
+                    <div class="form-group"><label for="hair-color-sb">Hair Color</label><input type="text" id="hair-color-sb" name="subject.hair.color" value="{{small_bedroom_data.subject.hair.color}}"></div>
+                    <div class="form-group"><label for="hair-state-sb">Hair State</label><input type="text" id="hair-state-sb" name="subject.hair.state" value="{{small_bedroom_data.subject.hair.state}}"></div>
+                    <div class="form-group"><label for="face-expression-sb">Face Expression</label><input type="text" id="face-expression-sb" name="subject.face.expression" value="{{small_bedroom_data.subject.face.expression}}"></div>
+                    <div class="form-group"><label for="face-eyes-sb">Face Eyes</label><input type="text" id="face-eyes-sb" name="subject.face.eyes" value="{{small_bedroom_data.subject.face.eyes}}"></div>
+                    <div class="form-group"><label for="face-makeup-sb">Face Makeup</label><input type="text" id="face-makeup-sb" name="subject.face.makeup" value="{{small_bedroom_data.subject.face.makeup}}"></div>
+                    <div class="form-group"><label for="face-vibe-sb">Face Vibe</label><input type="text" id="face-vibe-sb" name="subject.face.vibe" value="{{small_bedroom_data.subject.face.vibe}}"></div>
+                    <div class="form-group"><label for="body-build-sb">Body Build</label><input type="text" id="body-build-sb" name="subject.body.build" value="{{small_bedroom_data.subject.body.build}}"></div>
+                    <div class="form-group"><label for="body-waist-sb">Body Waist</label><input type="text" id="body-waist-sb" name="subject.body.waist" value="{{small_bedroom_data.subject.body.waist}}"></div>
+                    <div class="form-group"><label for="body-stomach-sb">Body Stomach</label><input type="text" id="body-stomach-sb" name="subject.body.stomach" value="{{small_bedroom_data.subject.body.stomach}}"></div>
+                    <div class="form-group"><label for="body-skin-sb">Body Skin</label><input type="text" id="body-skin-sb" name="subject.body.skin" value="{{small_bedroom_data.subject.body.skin}}"></div>
+                    <div class="form-group"><label for="outfit-top-type-sb">Outfit Top Type</label><input type="text" id="outfit-top-type-sb" name="subject.outfit.top.type" value="{{small_bedroom_data.subject.outfit.top.type}}"></div>
+                    <div class="form-group"><label for="outfit-top-color-sb">Outfit Top Color</label><input type="text" id="outfit-top-color-sb" name="subject.outfit.top.color" value="{{small_bedroom_data.subject.outfit.top.color}}"></div>
+                    <div class="form-group"><label for="outfit-top-fit-sb">Outfit Top Fit</label><input type="text" id="outfit-top-fit-sb" name="subject.outfit.top.fit" value="{{small_bedroom_data.subject.outfit.top.fit}}"></div>
+                    <div class="form-group"><label for="outfit-top-underwear-sb">Outfit Top Underwear</label><input type="text" id="outfit-top-underwear-sb" name="subject.outfit.top.underwear" value="{{small_bedroom_data.subject.outfit.top.underwear}}"></div>
+                    <div class="form-group"><label for="outfit-bottom-type-sb">Outfit Bottom Type</label><input type="text" id="outfit-bottom-type-sb" name="subject.outfit.bottom.type" value="{{small_bedroom_data.subject.outfit.bottom.type}}"></div>
+                    <div class="form-group"><label for="outfit-bottom-style-sb">Outfit Bottom Style</label><input type="text" id="outfit-bottom-style-sb" name="subject.outfit.bottom.style" value="{{small_bedroom_data.subject.outfit.bottom.style}}"></div>
+                    <div class="form-group"><label for="outfit-bottom-fit-sb">Outfit Bottom Fit</label><input type="text" id="outfit-bottom-fit-sb" name="subject.outfit.bottom.fit" value="{{small_bedroom_data.subject.outfit.bottom.fit}}"></div>
+                    <div class="form-group"><label for="pose-position-sb">Pose Position</label><input type="text" id="pose-position-sb" name="subject.pose.position" value="{{small_bedroom_data.subject.pose.position}}"></div>
+                    <div class="form-group"><label for="pose-arms-sb">Pose Arms</label><input type="text" id="pose-arms-sb" name="subject.pose.arms" value="{{small_bedroom_data.subject.pose.arms}}"></div>
+                    <div class="form-group"><label for="pose-legs-sb">Pose Legs</label><input type="text" id="pose-legs-sb" name="subject.pose.legs" value="{{small_bedroom_data.subject.pose.legs}}"></div>
+                    <div class="form-group"><label for="pose-posture-sb">Pose Posture</label><input type="text" id="pose-posture-sb" name="subject.pose.posture" value="{{small_bedroom_data.subject.pose.posture}}"></div>
+                </div>
+                <div id="rules-sb" class="tab-content">
+                    <div class="form-group"><label for="rules-sb">iPhone Rules</label><textarea id="rules-sb" name="iphone_rules">{{small_bedroom_data.iphone_rules | join(', ')}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

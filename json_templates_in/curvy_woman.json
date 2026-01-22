@@ -1,0 +1,57 @@
+{
+  "style": {
+    "realism": "hyper-realistic",
+    "cinematic": true,
+    "camera_angle": "extreme low-angle",
+    "aspect_ratio": "4:5",
+    "depth_of_field": "shallow"
+  },
+  "subject": {
+    "gender": "female",
+    "appearance": {
+      "skin_tone": "extremely pale porcelain-white",
+      "body_type": "hourglass",
+      "abdomen": "curvy with realistic texture"
+    },
+    "accessories": [
+      {
+        "type": "waist_chain",
+        "material": "gold",
+        "position": "around waist"
+      }
+    ]
+  },
+  "pose": {
+    "overall_posture": "elongated S-curve",
+    "left_arm": {
+      "position": "raised high",
+      "interaction": "resting on doorframe"
+    },
+    "right_hand": {
+      "position": "lowered at hip level",
+      "interaction": "grasping edge of second door panel"
+    }
+  },
+  "framing": {
+    "composition": "subject framed between two wooden bedroom door panels",
+    "camera_position": "inches away from midsection",
+    "focus_progression": [
+      "curvy abdomen",
+      "hourglass-shaped torso",
+      "gold waist chain",
+      "face"
+    ]
+  },
+  "environment": {
+    "location": "bedroom",
+    "objects": [
+      "wooden door panel (left)",
+      "wooden door panel (right)"
+    ]
+  },
+  "visual_emphasis": [
+    "realistic skin texture",
+    "graceful body lines",
+    "cinematic intimacy"
+  ]
+}

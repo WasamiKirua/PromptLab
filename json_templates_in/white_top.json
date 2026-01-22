@@ -1,0 +1,35 @@
+{
+  "subject": {
+    "description": "Young woman with a fit, slender build",
+    "hair": "Dark brown to black hair, styled in a sleek, tight ponytail with a middle part",
+    "eyes": "Light green or hazel, striking and clear",
+    "skin": "Light complexion with a radiant, dewy finish",
+    "expression": "Neutral to slight pout, soft and alluring gaze looking directly at the camera",
+    "pose": "Selfie angle, one arm extended holding the camera, the other arm raised with hand touching the back of the head/neck area"
+  },
+  "attire": {
+    "clothing": "White, tight-fitting spaghetti strap tank top",
+    "style": "Casual, loungewear, clean aesthetic"
+  },
+  "accessories": {
+    "neck": "Gold chain necklace with a medium-sized heart pendant",
+    "ears": "Multiple ear piercings; small gold hoops and pink/purple huggie hoop earrings",
+    "wrists": "Stacked bracelets on the left wrist including a gold screw-motif bangle (Cartier style), a diamond tennis bracelet, and delicate gold chains",
+    "fingers": "Multiple gold rings stacked on the left hand"
+  },
+  "makeup": {
+    "style": "Natural glam / clean girl aesthetic",
+    "details": "Defined eyebrows, highlighter on cheekbones and tip of the nose, glossy nude-pink lips, subtle mascara"
+  },
+  "environment": {
+    "location": "Indoor hallway or bedroom",
+    "background": "Wallpaper featuring a repeating pattern of vintage bicycles, white door frame, cream-colored walls, glimpse of wooden flooring",
+    "lighting": "Soft, warm artificial indoor lighting, creating a golden hour glow effect on the skin"
+  },
+  "technical_specs": {
+    "resolution": "4K Ultra HD",
+    "quality": "Photorealistic, highly detailed textures, sharp focus",
+    "camera_angle": "Eye-level selfie perspective",
+    "style": "Influencer selfie, candid, high-end lifestyle photography"
+  }
+}

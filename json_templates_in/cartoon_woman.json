@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "aspect_ratio": "2:3",
+    "quality": "ultra_photorealistic, detailed mirror selfie",
+    "resolution": "8k",
+    "camera": "Smartphone camera visible in the reflection, natural daylight",
+    "style": "Candid mirror selfie, high texture fidelity, clean composition."
+  },
+  "subject": {
+    "identity": "The woman known as, with her characteristic facial features: blue/grey eyes, prominent natural freckles, and long platinum blonde/silver hair.",
+    "face_details": {
+      "eyes": "Blue/grey eyes looking at the phone in the mirror.",
+      "skin": "Light skin tone with prominent natural freckles clearly visible on the face and chest.",
+      "expression": "A neutral, slightly serious expression as she looks at the phone screen."
+    },
+    "hair": {
+      "color": "Platinum blonde/silver, long and straight, falling over her shoulders.",
+      "style": "Long, straight, parted in the middle, with a few strands framing the face."
+    },
+    "body": {
+      "pose": "Standing full-body pose in front of a large black-framed arched mirror, holding a white smartphone in her right hand to take the selfie, left hand on her hip, right leg slightly forward.",
+      "build": "Enhanced curves with a fuller bust and larger hips, consistent with her established physique.",
+      "tattoos": "No visible tattoos; the skin on her ribcage and arms is completely clear and natural."
+    },
+    "outfit_and_accessories": {
+      "romper": "A pink long-sleeved romper with a pattern of small cartoon cat figures and hearts, buttoned up the front.",
+      "socks": "White knee-high socks.",
+      "phone": "White smartphone with a multi-camera array, held in the right hand."
+    }
+  },
+  "environment": {
+    "location": "A cozy, personalized bedroom seen through a large black-framed arched mirror.",
+    "background_elements": [
+      "A bed with a grey upholstered headboard, pink and white bedding, and a white textured pillow.",
+      "A white wall covered with various anime, manga, and cute posters.",
+      "A small gold-framed bedside table with a teddy bear, purple plush toy, and other small items.",
+      "A beige textured rug on a wooden floor.",
+      "A black-framed art piece on the left wall."
+    ],
+    "atmosphere": "A cozy, vibrant, and tidy bedroom filled with personal decor."
+  },
+  "lighting": {
+    "source": "Soft, natural daylight coming from a window to the side, creating gentle shadows and highlighting the textures of the fabric and skin.",
+    "realism_focus": "Extreme attention to detail on the freckled skin, the platinum hair strands, the fabric pattern of the romper, the phone screen reflection, and all the background items."
+  }
+}

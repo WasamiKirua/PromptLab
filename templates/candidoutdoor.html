@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 120px; resize: vertical; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        .tab-nav { margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 10px; }
+        .tab-link { background-color: #f0cfe0; color: #6f5d59; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; }
+        .tab-link.active { background-color: #ff8fb8; color: #fff6f2; }
+        .tab-link:hover:not(.active) { background-color: #ffe1ee; color: #fff; }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>Candid Outdoor</h1>
+            <form id="forge-form" action="/candidoutdoor" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/candid_outdoor.png" alt="Template preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'meta-co')">Meta</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'scene-co')">Scene</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'lighting-co')">Lighting</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-co')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'realism-co')">Realism</button>
+                </div>
+                <div id="meta-co" class="tab-content active">
+                    <div class="form-group"><label for="aspect-co">Aspect Ratio</label><input type="text" id="aspect-co" name="meta.aspect_ratio" value="{{candid_outdoor_data.meta.aspect_ratio}}"></div>
+                    <div class="form-group"><label for="quality-co">Quality</label><textarea id="quality-co" name="meta.quality">{{candid_outdoor_data.meta.quality}}</textarea></div>
+                    <div class="form-group"><label for="resolution-co">Resolution</label><textarea id="resolution-co" name="meta.resolution">{{candid_outdoor_data.meta.resolution}}</textarea></div>
+                    <div class="form-group"><label for="camera-co">Camera</label><textarea id="camera-co" name="meta.camera">{{candid_outdoor_data.meta.camera}}</textarea></div>
+                    <div class="form-group"><label for="lens-co">Lens</label><textarea id="lens-co" name="meta.lens">{{candid_outdoor_data.meta.lens}}</textarea></div>
+                    <div class="form-group"><label for="style-co">Style</label><textarea id="style-co" name="meta.style">{{candid_outdoor_data.meta.style}}</textarea></div>
+                    <div class="form-group"><label for="composition-co">Composition</label><textarea id="composition-co" name="meta.composition">{{candid_outdoor_data.meta.composition}}</textarea></div>
+                </div>
+                <div id="scene-co" class="tab-content">
+                    <div class="form-group"><label for="location-co">Location</label><textarea id="location-co" name="scene.location">{{candid_outdoor_data.scene.location}}</textarea></div>
+                    <div class="form-group"><label for="environment-co">Environment</label><textarea id="environment-co" name="scene.environment">{{candid_outdoor_data.scene.environment | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="time-co">Time</label><textarea id="time-co" name="scene.time">{{candid_outdoor_data.scene.time}}</textarea></div>
+                    <div class="form-group"><label for="atmosphere-co">Atmosphere</label><textarea id="atmosphere-co" name="scene.atmosphere">{{candid_outdoor_data.scene.atmosphere}}</textarea></div>
+                </div>
+                <div id="lighting-co" class="tab-content">
+                    <div class="form-group"><label for="lighting-type-co">Type</label><textarea id="lighting-type-co" name="lighting.type">{{candid_outdoor_data.lighting.type}}</textarea></div>
+                    <div class="form-group"><label for="lighting-source-co">Source</label><textarea id="lighting-source-co" name="lighting.source">{{candid_outdoor_data.lighting.source}}</textarea></div>
+                    <div class="form-group"><label for="lighting-effect-co">Effect</label><textarea id="lighting-effect-co" name="lighting.effect">{{candid_outdoor_data.lighting.effect}}</textarea></div>
+                </div>
+                <div id="subject-co" class="tab-content">
+                    <div class="form-group"><label for="identity-co">Identity</label><textarea id="identity-co" name="subject.identity">{{candid_outdoor_data.subject.identity}}</textarea></div>
+                    <div class="form-group"><label for="pose-co">Pose</label><textarea id="pose-co" name="subject.body.pose">{{candid_outdoor_data.subject.body.pose}}</textarea></div>
+                    <div class="form-group"><label for="physique-co">Physique</label><textarea id="physique-co" name="subject.body.physique">{{candid_outdoor_data.subject.body.physique}}</textarea></div>
+                    <div class="form-group"><label for="clothing-co">Clothing</label><textarea id="clothing-co" name="subject.outfit.clothing">{{candid_outdoor_data.subject.outfit.clothing}}</textarea></div>
+                </div>
+                <div id="realism-co" class="tab-content">
+                    <div class="form-group"><label for="textures-co">Textures</label><textarea id="textures-co" name="realism_focus.textures">{{candid_outdoor_data.realism_focus.textures}}</textarea></div>
+                    <div class="form-group"><label for="imperfections-co">Imperfections</label><textarea id="imperfections-co" name="realism_focus.imperfections">{{candid_outdoor_data.realism_focus.imperfections}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+{
+  "image_type": "photorealistic_fitness_portrait",
+  "resolution": "8K",
+  "style": [
+    "hyper-realistic",
+    "cinematic",
+    "professional fitness photography"
+  ],
+  "subject": {
+    "gender": "female",
+    "age": "young adult",
+    "ethnicity": "Indian",
+    "skin_tone": "fair",
+    "body_type": "fit, athletic",
+    "pose": {
+      "view": "3/4 rear view",
+      "posture": "arched back",
+      "head_position": "looking back over shoulder"
+    },
+    "expression": {
+      "mood": "serious",
+      "eyes": "focused",
+      "makeup": "winged eyeliner, minimal base"
+    }
+  },
+  "hair": {
+    "color": "honey-brown",
+    "style": "hair bun",
+    "details": "secured with hair clip, side-swept strands"
+  },
+  "outfit": {
+    "top": {
+      "type": "sports bra",
+      "color": "gray",
+      "design": "intricate strap detailing"
+    },
+    "bottom": {
+      "type": "shorts",
+      "color": "black",
+      "texture": "ribbed"
+    },
+    "socks": {
+      "type": "thigh-high",
+      "pattern": "gray stripes",
+      "base_color": "black"
+    }
+  },
+  "environment": {
+    "location": "gym",
+    "background_elements": [
+      "red metal squat rack",
+      "industrial gym equipment"
+    ],
+    "lighting": {
+      "type": "cinematic gym lighting",
+      "contrast": "high",
+      "highlights": "defined muscle contours"
+    }
+  },
+  "camera": {
+    "lens": "85mm",
+    "aperture": "shallow depth of field",
+    "focus": "sharp on subject, softly blurred background",
+    "angle": "slightly low angle"
+  },
+  "color_grading": {
+    "tone": "neutral with cinematic contrast",
+    "warmth": "slightly warm skin tones"
+  },
+  "quality_tags": [
+    "ultra-detailed",
+    "skin texture realism",
+    "sharp focus",
+    "professional studio quality"
+  ],
+  "usage_note": "Use as image reference"
+}

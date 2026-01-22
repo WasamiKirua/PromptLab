@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Dataset - Nano-Banana</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fff6f2; color: #2f2320; margin: 0; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .panel { background-color: #ffffff; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .full-width { grid-column: 1 / -1; }
+        h1, h2 { color: #ff8fb8; border-bottom: 1px solid #f0cfe0; padding-bottom: 0.5rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #ff8fb8; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid #f0cfe0; background-color: #ffffff; }
+        .home-link:hover { background-color: #fff0f6; border-color: #ff8fb8; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #6f5d59; }
+        input[type="text"], input[type="number"], textarea { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid #f0cfe0; background-color: #fff3f8; color: #2f2320; box-sizing: border-box; }
+        textarea { min-height: 120px; resize: vertical; }
+        #image-preview { max-width: 100%; max-height: 260px; margin-top: 1rem; border-radius: 4px; }
+        .image-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .image-card { background-color: #fff9f5; border: 1px solid #f5d6e6; border-radius: 8px; padding: 0.75rem; }
+        .image-title { font-size: 0.85rem; color: #6f5d59; margin-bottom: 0.5rem; }
+        @media (max-width: 700px) {
+            .image-row { grid-template-columns: 1fr; }
+        }
+        button {border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.2s; }
+        .hidden { display: none; }
+        .tab-content { display: none; padding-top: 1.5rem; }
+        .tab-content.active { display: block; }
+        .tab-content form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; }
+        .tab-content .form-group { margin-bottom: 0; }
+        .tab-nav { margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 10px; }
+        .tab-link { background-color: #f0cfe0; color: #6f5d59; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; }
+        .tab-link.active { background-color: #ff8fb8; color: #fff6f2; }
+        .tab-link:hover:not(.active) { background-color: #ffe1ee; color: #fff; }
+        @media (max-width: 900px) {
+            .tab-content form { grid-template-columns: 1fr; }
+        }
+        .status-banner { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5d6e6; background-color: #ffffff; color: #6f5d59; }
+        .status-banner.success { border-color: #3a6b4b; color: #2f7a5a; }
+        .status-banner.error { border-color: #f2b5b5; color: #a33b3b; }
+        .generated-preview { margin-top: 1rem; border-radius: 8px; border: 1px solid #f5d6e6; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel full-width">
+            <a class="home-link" href="/">← Back to Home</a>
+            <h1>American Girl</h1>
+            <form id="forge-form" action="/americangirl" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-row">
+                        <div class="image-card">
+                            <div class="image-title">Template Preview</div>
+                            <img id="image-preview" src="/static/images/american_girl.png" alt="Template preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Create</button>
+                <div id="generation-status" class="status-banner hidden">Generating...</div>
+                {% if generation_status == "completed" %}
+                    <div class="status-banner success">Generation complete. Saved Successfully!.</div>
+                    {% if generated_image_path %}
+                        <div class="generated-preview">
+                            <img src="{{ generated_image_path }}" alt="Generated output preview" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/i,'.jpg');">
+                        </div>
+                    {% endif %}
+                {% elif generation_status == "failed" %}
+                    <div class="status-banner error">Generation failed: {{ generation_error }}</div>
+                {% endif %}
+        </div>
+        <div class="panel full-width">
+            <h2>Customization</h2>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button type="button" class="tab-link active" onclick="openTab(event, 'config-ag')">Prompt Config</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'subject-ag')">Subject</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'wardrobe-ag')">Wardrobe & Setting</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'composition-ag')">Composition</button>
+                    <button type="button" class="tab-link" onclick="openTab(event, 'technical-ag')">Technical Emulation</button>
+                </div>
+                <div id="config-ag" class="tab-content active">
+                    <div class="form-group"><label for="version-ag">Version</label><input type="text" id="version-ag" name="prompt_configuration.version" value="{{american_girl_data.prompt_configuration.version}}"></div>
+                    <div class="form-group"><label for="aspect-ratio-ag">Aspect Ratio</label><input type="text" id="aspect-ratio-ag" name="prompt_configuration.aspect_ratio" value="{{american_girl_data.prompt_configuration.aspect_ratio}}"></div>
+                    <div class="form-group"><label for="orientation-ag">Orientation</label><input type="text" id="orientation-ag" name="prompt_configuration.orientation" value="{{american_girl_data.prompt_configuration.orientation}}"></div>
+                </div>
+                <div id="subject-ag" class="tab-content">
+                    <div class="form-group"><label for="age-ag">Age</label><input type="number" id="age-ag" name="subject_profile.demographics.age" value="{{american_girl_data.subject_profile.demographics.age}}"></div>
+                    <div class="form-group"><label for="ethnicity-ag">Ethnicity</label><input type="text" id="ethnicity-ag" name="subject_profile.demographics.ethnicity" value="{{american_girl_data.subject_profile.demographics.ethnicity}}"></div>
+                    <div class="form-group"><label for="gender-ag">Gender</label><input type="text" id="gender-ag" name="subject_profile.demographics.gender" value="{{american_girl_data.subject_profile.demographics.gender}}"></div>
+                    <div class="form-group"><label for="hair-ag">Hair</label><textarea id="hair-ag" name="subject_profile.physical_attributes.hair">{{american_girl_data.subject_profile.physical_attributes.hair}}</textarea></div>
+                    <div class="form-group"><label for="physique-ag">Physique</label><textarea id="physique-ag" name="subject_profile.physical_attributes.physique">{{american_girl_data.subject_profile.physical_attributes.physique}}</textarea></div>
+                    <div class="form-group"><label for="skin-ag">Skin</label><textarea id="skin-ag" name="subject_profile.physical_attributes.skin">{{american_girl_data.subject_profile.physical_attributes.skin}}</textarea></div>
+                    <div class="form-group"><label for="eye-contact-ag">Eye Contact</label><textarea id="eye-contact-ag" name="subject_profile.physical_attributes.eye_contact">{{american_girl_data.subject_profile.physical_attributes.eye_contact}}</textarea></div>
+                    <div class="form-group"><label for="makeup-style-ag">Makeup Style</label><input type="text" id="makeup-style-ag" name="subject_profile.makeup.style" value="{{american_girl_data.subject_profile.makeup.style}}"></div>
+                    <div class="form-group"><label for="makeup-finish-ag">Makeup Finish</label><input type="text" id="makeup-finish-ag" name="subject_profile.makeup.finish" value="{{american_girl_data.subject_profile.makeup.finish}}"></div>
+                </div>
+                <div id="wardrobe-ag" class="tab-content">
+                    <div class="form-group"><label for="apparel-type-ag">Apparel Type</label><textarea id="apparel-type-ag" name="wardrobe_and_setting.apparel.type">{{american_girl_data.wardrobe_and_setting.apparel.type}}</textarea></div>
+                    <div class="form-group"><label for="apparel-neckline-ag">Neckline</label><textarea id="apparel-neckline-ag" name="wardrobe_and_setting.apparel.neckline">{{american_girl_data.wardrobe_and_setting.apparel.neckline}}</textarea></div>
+                    <div class="form-group"><label for="apparel-details-ag">Details</label><textarea id="apparel-details-ag" name="wardrobe_and_setting.apparel.details">{{american_girl_data.wardrobe_and_setting.apparel.details | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="apparel-fit-ag">Fit</label><textarea id="apparel-fit-ag" name="wardrobe_and_setting.apparel.fit">{{american_girl_data.wardrobe_and_setting.apparel.fit}}</textarea></div>
+                    <div class="form-group"><label for="environment-surface-ag">Surface</label><textarea id="environment-surface-ag" name="wardrobe_and_setting.environment.surface">{{american_girl_data.wardrobe_and_setting.environment.surface}}</textarea></div>
+                    <div class="form-group"><label for="environment-background-ag">Background</label><textarea id="environment-background-ag" name="wardrobe_and_setting.environment.background">{{american_girl_data.wardrobe_and_setting.environment.background}}</textarea></div>
+                </div>
+                <div id="composition-ag" class="tab-content">
+                    <div class="form-group"><label for="angle-ag">Angle</label><textarea id="angle-ag" name="compositional_data.angle">{{american_girl_data.compositional_data.angle}}</textarea></div>
+                    <div class="form-group"><label for="positioning-ag">Positioning</label><textarea id="positioning-ag" name="compositional_data.positioning">{{american_girl_data.compositional_data.positioning}}</textarea></div>
+                    <div class="form-group"><label for="framing-ag">Framing</label><textarea id="framing-ag" name="compositional_data.framing">{{american_girl_data.compositional_data.framing}}</textarea></div>
+                </div>
+                <div id="technical-ag" class="tab-content">
+                    <div class="form-group"><label for="primary-source-ag">Primary Source</label><textarea id="primary-source-ag" name="technical_emulation.lighting.primary_source">{{american_girl_data.technical_emulation.lighting.primary_source}}</textarea></div>
+                    <div class="form-group"><label for="effects-ag">Effects</label><textarea id="effects-ag" name="technical_emulation.lighting.effects">{{american_girl_data.technical_emulation.lighting.effects | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="camera-era-ag">Camera Era</label><textarea id="camera-era-ag" name="technical_emulation.camera_characteristics.era">{{american_girl_data.technical_emulation.camera_characteristics.era}}</textarea></div>
+                    <div class="form-group"><label for="sensor-artifacts-ag">Sensor Artifacts</label><textarea id="sensor-artifacts-ag" name="technical_emulation.camera_characteristics.sensor_artifacts">{{american_girl_data.technical_emulation.camera_characteristics.sensor_artifacts | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="optics-ag">Optics</label><textarea id="optics-ag" name="technical_emulation.camera_characteristics.optics">{{american_girl_data.technical_emulation.camera_characteristics.optics | join(', ')}}</textarea></div>
+                    <div class="form-group"><label for="post-aesthetic-ag">Post Aesthetic</label><textarea id="post-aesthetic-ag" name="technical_emulation.post_processing.aesthetic">{{american_girl_data.technical_emulation.post_processing.aesthetic}}</textarea></div>
+                    <div class="form-group"><label for="post-overlays-ag">Overlays</label><textarea id="post-overlays-ag" name="technical_emulation.post_processing.overlays">{{american_girl_data.technical_emulation.post_processing.overlays}}</textarea></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script>
+        function openTab(e, t) {
+            var n = e.currentTarget.closest('.panel'),
+            l = n.getElementsByClassName('tab-content'),
+            c = n.getElementsByClassName('tab-link');
+            for (var i = 0; i < l.length; i++) { l[i].style.display = 'none'; }
+            for (var i = 0; i < c.length; i++) { c[i].className = c[i].className.replace(' active', ''); }
+            document.getElementById(t).style.display = 'block';
+            e.currentTarget.className += ' active';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.panel').forEach(function(e) {
+                var t = e.querySelector('.tab-link');
+                t && t.click();
+            });
+            var form = document.getElementById('forge-form');
+            var statusBanner = document.getElementById('generation-status');
+            if (form && statusBanner) {
+                form.addEventListener('submit', function() {
+                    statusBanner.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

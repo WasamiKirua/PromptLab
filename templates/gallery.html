@@ -15,7 +15,18 @@
             --accent-strong: #ff8fb8;
             --accent-cool: #8fd3ff;
         }
+        body[data-theme="dark"] {
+            --bg: #120f1a;
+            --panel: #1a1524;
+            --card: #221a2c;
+            --ink: #f6e9f1;
+            --muted: #c7b4be;
+            --accent: #5f3a57;
+            --accent-strong: #ff8fb8;
+            --accent-cool: #8fd3ff;
+        }
         body { font-family: "Trebuchet MS", sans-serif; background: radial-gradient(circle at top, #fff6f2 0%, #fff3f8 60%); color: var(--ink); margin: 0; padding: 2rem; }
+        body[data-theme="dark"] { background: radial-gradient(circle at top, #1a1524 0%, #120f1a 60%); }
         .container { max-width: 1200px; margin: 0 auto; }
         .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; gap: 1rem; }
         h1 { margin: 0; font-size: 2.2rem; letter-spacing: 0.02em; }
@@ -60,5 +71,13 @@
             <div class="empty">No generated images yet.</div>
         {% endif %}
     </div>
+    <script>
+        (() => {
+            const stored = localStorage.getItem("home-theme");
+            if (stored === "dark") {
+                document.body.dataset.theme = "dark";
+            }
+        })();
+    </script>
 </body>
 </html>

@@ -355,6 +355,974 @@ async def caption_to_prompt_generate(
     return JSONResponse({"prompt": prompt})
 
 
+@app.get("/sidneysteps", response_class=HTMLResponse)
+async def sidney_steps(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "sidneysteps.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/sidneysteps", response_class=HTMLResponse)
+async def sidney_steps_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/sidney_steps.json")
+        sidney_steps_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "sidneysteps.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=sidney_steps_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "sidneysteps.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/japansecretary", response_class=HTMLResponse)
+async def japan_secretary(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "japansecretary.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/japansecretary", response_class=HTMLResponse)
+async def japan_secretary_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/japan_secretary.json")
+        japan_secretary_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "japansecretary.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=japan_secretary_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "japansecretary.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/coolplants", response_class=HTMLResponse)
+async def cool_plants(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "coolplants.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/coolplants", response_class=HTMLResponse)
+async def cool_plants_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/cool_plants.json")
+        cool_plants_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "coolplants.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=cool_plants_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "coolplants.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/onterrace", response_class=HTMLResponse)
+async def on_terrace(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "onterrace.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/onterrace", response_class=HTMLResponse)
+async def on_terrace_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/on_terrace.json")
+        on_terrace_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "onterrace.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=on_terrace_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "onterrace.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/closeup", response_class=HTMLResponse)
+async def closeup(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "closeup.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/closeup", response_class=HTMLResponse)
+async def closeup_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/closeup.json")
+        closeup_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "closeup.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=closeup_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "closeup.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/womancomics", response_class=HTMLResponse)
+async def woman_comics(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "womancomics.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/womancomics", response_class=HTMLResponse)
+async def woman_comics_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/woman_comics.json")
+        woman_comics_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "womancomics.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=woman_comics_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "womancomics.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/sadiesink", response_class=HTMLResponse)
+async def sadie_sink(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "sadiesink.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/sadiesink", response_class=HTMLResponse)
+async def sadie_sink_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/sadie_sink.json")
+        sadie_sink_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "sadiesink.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=sadie_sink_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "sadiesink.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/breakinginternet", response_class=HTMLResponse)
+async def breaking_internet(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "breakinginternet.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/breakinginternet", response_class=HTMLResponse)
+async def breaking_internet_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/breaking_internet.json")
+        breaking_internet_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "breakinginternet.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=breaking_internet_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "breakinginternet.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/greekpaint", response_class=HTMLResponse)
+async def greek_paint(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "greekpaint.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/greekpaint", response_class=HTMLResponse)
+async def greek_paint_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/greek_paint.json")
+        greek_paint_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "greekpaint.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=greek_paint_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "greekpaint.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/twins", response_class=HTMLResponse)
+async def twins(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "twins.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/twins", response_class=HTMLResponse)
+async def twins_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/twins.json")
+        twins_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "twins.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=twins_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "twins.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/eastasian", response_class=HTMLResponse)
+async def east_asian(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "eastasian.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/eastasian", response_class=HTMLResponse)
+async def east_asian_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/east_asian.json")
+        east_asian_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "eastasian.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=east_asian_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "eastasian.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/insidecar", response_class=HTMLResponse)
+async def inside_car(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "insidecar.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/insidecar", response_class=HTMLResponse)
+async def inside_car_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/inside_car.json")
+        inside_car_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "insidecar.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=inside_car_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "insidecar.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/justconfidence", response_class=HTMLResponse)
+async def just_confidence(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "justconfidence.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/justconfidence", response_class=HTMLResponse)
+async def just_confidence_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/just_confidence.json")
+        just_confidence_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "justconfidence.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=just_confidence_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "justconfidence.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/editorialfashion", response_class=HTMLResponse)
+async def editorial_fashion(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "editorialfashion.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/editorialfashion", response_class=HTMLResponse)
+async def editorial_fashion_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/editorial_fashion.json")
+        editorial_fashion_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "editorialfashion.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=editorial_fashion_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "editorialfashion.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/withflowers", response_class=HTMLResponse)
+async def with_flowers(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "withflowers.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/withflowers", response_class=HTMLResponse)
+async def with_flowers_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/with_flowers.json")
+        with_flowers_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "withflowers.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=with_flowers_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "withflowers.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/marmorlook", response_class=HTMLResponse)
+async def marmor_look(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "marmorlook.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/marmorlook", response_class=HTMLResponse)
+async def marmor_look_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/marmor_look.json")
+        marmor_look_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "marmorlook.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=marmor_look_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "marmorlook.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/scandinavian", response_class=HTMLResponse)
+async def scandinavian(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "scandinavian.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/scandinavian", response_class=HTMLResponse)
+async def scandinavian_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/scandinavian.json")
+        scandinavian_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "scandinavian.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=scandinavian_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "scandinavian.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/scandinaviancontroller", response_class=HTMLResponse)
+async def scandinavian_controller(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "scandinaviancontroller.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/scandinaviancontroller", response_class=HTMLResponse)
+async def scandinavian_controller_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/scandinavian_controller.json")
+        scandinavian_controller_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "scandinaviancontroller.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=scandinavian_controller_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "scandinaviancontroller.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/playfulselfy", response_class=HTMLResponse)
+async def playful_selfy(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "playfulselfy.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/playfulselfy", response_class=HTMLResponse)
+async def playful_selfy_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/playful_selfy.json")
+        playful_selfy_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "playfulselfy.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=playful_selfy_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "playfulselfy.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/attractasian", response_class=HTMLResponse)
+async def attract_asian(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "attractasian.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/attractasian", response_class=HTMLResponse)
+async def attract_asian_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/attract_asian.json")
+        attract_asian_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "attractasian.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=attract_asian_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "attractasian.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/gumwoman", response_class=HTMLResponse)
+async def gum_woman(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "gumwoman.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/gumwoman", response_class=HTMLResponse)
+async def gum_woman_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/gum_woman.json")
+        gum_woman_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "gumwoman.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=gum_woman_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "gumwoman.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
+@app.get("/ustia", response_class=HTMLResponse)
+async def ustia(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "ustia.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@app.post("/ustia", response_class=HTMLResponse)
+async def ustia_generate(request: Request) -> HTMLResponse:
+    generation_status: Optional[str] = None
+    generation_error: Optional[str] = None
+    generated_image_path: Optional[str] = None
+
+    try:
+        base_path = Path("json_templates_in/ustia.json")
+        ustia_data = json.loads(base_path.read_text(encoding="utf-8"))
+        output_image_path = IMAGES_GENERATED / "ustia.png"
+
+        result_path = generate_variation_from_template_json(
+            template_json=ustia_data,
+            out_image_path=output_image_path,
+        )
+        generation_status = "completed"
+        generated_image_path = _with_cache_buster(
+            f"/static/images_generated/{Path(result_path).name}"
+        )
+    except Exception as exc:
+        generation_status = "failed"
+        generation_error = str(exc)
+
+    return templates.TemplateResponse(
+        "ustia.html",
+        {
+            "request": request,
+            "generation_status": generation_status,
+            "generation_error": generation_error,
+            "generated_image_path": generated_image_path,
+        },
+    )
+
+
 @app.post("/text-to-prompt")
 async def text_to_prompt_generate(
     text: str = Form(""),

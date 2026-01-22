@@ -1,0 +1,46 @@
+{
+  "scene": {
+    "description": "Ultra-photorealistic mirror selfie in a modern bathroom. Young Asian woman taking a playful selfie with a compact digital camera.",
+    "environment": {
+      "location": "modern clean bathroom",
+      "elements": [
+        "large mirror reflecting the scene",
+        "white door slightly open in background",
+        "white towel hanging on rack",
+        "frosted glass window with blinds",
+        "white sink/counter partially visible",
+        "soft warm indoor lighting"
+      ],
+      "lighting": "soft warm overhead bathroom light, flattering on skin, subtle shadows"
+    },
+    "photography": {
+      "camera_style": "compact digital camera mirror selfie – camera held in right hand, visible in mirror reflection",
+      "angle": "mirror straight-on, three-quarter body",
+      "shot_type": "playful casual bathroom mirror selfie",
+      "aspect_ratio": "9:16 vertical",
+      "texture": "hyper-realistic skin, fabric details, sharp mirror reflection"
+    }
+  },
+  "subject": {
+    "appearance": "A young and attractive Asian woman in her early 20s",
+    "pose": {
+      "overall": "standing in front of mirror, right arm raised holding compact camera to eye level for selfie, left arm relaxed by side",
+      "torso": "slightly turned, off-shoulder sweatshirt exposing one shoulder"
+    },
+    "expression": "soft confident pout with glossy lips, eyes looking directly at camera, subtle playful vibe",
+    "hair": "long dark hair in sleek high ponytail, smooth and straight with center part",
+    "clothing": {
+      "top": "oversized light grey sweatshirt with large black '14' print on front, worn off one shoulder, sleeves long and loose"
+    },
+    "accessories": "small gold hoop earrings, thin gold necklace, black compact digital camera held in right hand"
+  },
+  "requirements": [
+    "Long dark hair in sleek high ponytail with center part",
+    "Oversized light grey sweatshirt with black '14' print, worn off one shoulder",
+    "Small gold hoop earrings and thin gold necklace",
+    "Holding black compact digital camera in right hand for mirror selfie",
+    "Soft confident pout looking at camera",
+    "Modern bathroom mirror setting with white door, towel, frosted window",
+    "No phone – compact camera only"
+  ]
+}

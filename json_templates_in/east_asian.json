@@ -1,0 +1,43 @@
+{
+  "subject": {
+    "ethnicity": "East Asian",
+    "features": "Short black bob-cut hair with soft texture, sharp winged eyeliner, delicate facial structure, slightly parted natural lips, focused expression looking into the mirror reflection.",
+    "body": {
+      "physique": "Hyper-pronounced hourglass silhouette with a high waist-to-hip ratio.",
+      "anatomy": "Significant gluteal volume with emphasis on the gluteus maximus and medius curves, extremely narrow and toned waist, lean midsection, athletic yet feminine limb definition, visible iliac crest, and smooth skin texture with realistic anatomical shadows."
+    }
+  },
+  "wardrobe": {
+    "headwear": "Kelly green cotton twill baseball cap, front panel features the white 'XBOX' logo.",
+    "clothing": "Minimalist kelly green micro-string bikini. The triangle top features the text 'XBOX' printed in black sans-serif lettering on the lateral side of the cup. The bottoms are high-leg string style, emphasizing the hip curvature."
+  },
+  "pose_action": {
+    "description": "Mirror selfie from a side-profile perspective. The subject is standing with her torso slightly rotated toward the mirror to capture the side and rear silhouette. One arm is raised, holding a grey smartphone at eye level to take the photo.",
+    "reflection_integrity_rules": "Perfect geometric alignment between the subject and the mirror reflection, consistent lighting angles across both planes, realistic mirror surface imperfections, and depth-of-field consistency."
+  },
+  "scene": {
+    "environment": "Authentic, slightly cluttered bedroom during twilight.",
+    "background_elements": "A beige upholstered armchair with dark clothing draped over it, an unmade bed with rumpled grey sheets, a wooden bedside table. A window in the background reveals a deep blue dusk sky, providing a color contrast to the interior.",
+    "atmosphere": "Intimate, domestic, and realistic 'candid' aesthetic."
+  },
+  "lighting": {
+    "setup": "Dual-tone mixed lighting.",
+    "interior": "Warm, golden 2700K glow from a minimalist bedside lamp creating soft highlights on the skin and wardrobe.",
+    "exterior": "Cool, 6500K blue-hour natural light filtering through the window, acting as a subtle rim light on the subject's hair and silhouette.",
+    "shadows": "Natural soft-edged shadows emphasizing body contours and fabric folds."
+  },
+  "camera": {
+    "aspect_ratio": "9:16",
+    "gear": "High-end mobile phone camera simulation, 26mm wide-angle lens equivalent.",
+    "settings": "f/1.8 aperture for a shallow depth of field, sharp focus on the subject in the mirror reflection, slight natural grain to mimic a mobile sensor, realistic ISO noise in shadow areas.",
+    "composition": "Vertical orientation, eye-level shot, subject centered vertically to emphasize the full body silhouette."
+  },
+  "negative_constraints": [
+    "no logos on background items",
+    "no beautify smoothing",
+    "no extra limbs",
+    "no text on walls",
+    "no unnatural skin glow",
+    "no distorted mirror reflections"
+  ]
+}

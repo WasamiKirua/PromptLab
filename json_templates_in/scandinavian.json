@@ -1,0 +1,32 @@
+{
+  "scene": {
+    "description": "Ultra-photorealistic golden hour mirror selfie in a cozy gamer bedroom, 9:16 vertical",
+    "environment": {
+      "location": "sunlit bedroom with gaming setup",
+      "elements": [
+        "black gaming chair",
+        "large mirror placed directly in front of the chair",
+        "natural golden hour sunlight streaming from side window",
+        "clean wooden floor, minimal background"
+      ],
+      "lighting": "pure warm golden hour sunlight, beautiful rim light on hair and skin, soft shadows"
+    },
+    "photography": {
+      "camera_style": "iPhone mirror selfie, phone visible in hand",
+      "angle": "mirror straight-on, full body reflection",
+      "shot_type": "intimate cozy golden hour selfie"
+    }
+  },
+  "subject": {
+    "description": "Gorgeous early-20s Scandinavian girl, platinum blonde hair, striking ice-blue eyes, full natural lips, flawless fair skin with a light golden glow, delicate yet defined facial features, soft feminine beauty",
+    "pose": "sitting curled up adorably in gaming chair – knees pulled tightly to chest, chin resting on knees, feet on seat edge",
+    "eyes": "looking down at phone screen with soft, peaceful, slightly sleepy expression",
+    "hair": "platinum blonde, messy high bun loosely secured with a pencil, lots of soft face-framing strands catching golden light",
+    "headphones": "cute pastel pink over-ear headphones perfectly on head",
+    "clothing": {
+      "top": "very short white ribbed crop tank top, thin straps",
+      "bottom": "tiny heather grey cotton lounge shorts, super short length, soft relaxed fit"
+    },
+    "body": "soft natural thicker thighs, average natural chest, barefoot"
+  }
+}

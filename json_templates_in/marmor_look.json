@@ -1,0 +1,90 @@
+{
+  "image_request": {
+    "composition": {
+      "orientation": "Vertical portrait",
+      "aspect_ratio": "3:4",
+      "framing": "Full-body framing from head to feet",
+      "subject_position": "Slightly right of center",
+      "background_fill": "Background fully occupied by wall"
+    },
+    "camera": {
+      "placement": "Hip-height camera position",
+      "angle": "Slight upward low-angle perspective",
+      "view": "Three-quarter rear view",
+      "lens_equivalent": "50–70mm prime or short telephoto",
+      "perspective": "Natural, no wide-angle distortion",
+      "depth_of_field": "Moderate depth of field, subject fully sharp"
+    },
+    "pose": {
+      "body_orientation": "Body turned away from camera, head turned back toward lens",
+      "weight_distribution": "Weight shifted onto back leg",
+      "hips": "Angled outward",
+      "arms": {
+        "position": "Bent and held close to torso",
+        "interaction": "Lightly holding a white cropped jacket draped off the shoulders"
+      },
+      "posture": "Relaxed, confident, natural stance"
+    },
+    "appearance": {
+      "hair": {
+        "color": "Dark brown to black",
+        "length": "Long",
+        "style": "Soft waves",
+        "part": "Center part",
+        "flow": "Falling naturally down the back with slight volume"
+      },
+      "accessories": {
+        "sunglasses": "Pink-tinted round sunglasses with thin metal frame"
+      }
+    },
+    "outfit": {
+      "dress": {
+        "type": "Bodycon mini dress",
+        "color": "Blush pink",
+        "fit": "Extremely form-fitting",
+        "fabric": "Thin, smooth texture",
+        "sleeves": "Sleeveless"
+      },
+      "jacket": {
+        "type": "White cropped jacket",
+        "style": "Worn off-shoulder",
+        "details": "Partially unbuttoned, loose sleeves"
+      },
+      "shoes": {
+        "type": "White high-heel sandals",
+        "design": "Ankle strap, thin straps, narrow heels"
+      }
+    },
+    "lighting": {
+      "type": "Natural outdoor daylight",
+      "direction": "Front-left light source",
+      "quality": "Soft and even",
+      "shadows": "Minimal, gentle",
+      "restrictions": "No flash, no artificial lighting"
+    },
+    "environment": {
+      "setting": "Clean modern urban outdoor space",
+      "ground": "Smooth concrete walkway",
+      "background": {
+        "wall": "Solid blue wall",
+        "texture": "Subtle concrete texture",
+        "gradient": "Soft blue gradient",
+        "distractions": "None"
+      }
+    },
+    "color_and_processing": {
+      "white_balance": "Daylight",
+      "tones": "Soft pastel color palette",
+      "contrast": "Medium contrast",
+      "saturation": "Realistic, natural saturation",
+      "skin": "Natural texture preserved",
+      "editing": "No filters, no HDR, no CGI, no beauty retouching"
+    },
+    "final_output": {
+      "quality": "Ultra-realistic DSLR photograph",
+      "focus": "Sharp focus throughout subject",
+      "textures": "Authentic fabric, skin, and environmental textures",
+      "overall_style": "Natural, modern, fashion editorial realism"
+    }
+  }
+}

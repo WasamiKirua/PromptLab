@@ -1,7 +1,7 @@
 [project]
 name = "PromptLab"
 version = "0.1.0"
-description = "Captioning to Prompt, Text to Prompt. Tuned for Z-image, Flux.2 Klein and Qwen-Image, NanoBanana Image Generation"
+description = "Captioning to Prompt and Text to Prompt. Tuned for Z-image, Flux.2 Klein and Qwen-Image."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

@@ -13,6 +13,5 @@ wheels/
 .env
 
 # Project Related
-images_generated/
 metadata.json
 .DS_Store
